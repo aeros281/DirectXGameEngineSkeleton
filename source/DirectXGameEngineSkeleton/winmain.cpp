@@ -6,6 +6,7 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
 bool CreateMainWindow(HINSTANCE, int);
 LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM);
+bool AnotherInstance();
 
 // Global variable
 HINSTANCE hinst;
@@ -149,4 +150,21 @@ bool CreateMainWindow(HINSTANCE hInstance, int nCmdShow)
 	// Send a WM_PAINT message to the window procedure
 	UpdateWindow(hwnd);
 	return true;
+}
+
+//=============================================================================
+// Check for another instance of the current application
+// Returns: true if another instance is found
+//			false if this is the only one
+//=============================================================================
+bool AnotherInstance()
+{
+	HANDLE mutex;
+	// Attempt to create a mutex using our unique string
+	mutex = CreateMutex(NULL, true,
+		"The_chosen_one_5654-XYAK");
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+		return true;				// Another instance was found
+
+	return false;
 }
