@@ -9,6 +9,10 @@ LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM);
 
 // Global variable
 HINSTANCE hinst;
+HDC hdc;							// Handle to device context
+TCHAR ch = ' ';						// Character entered
+RECT rect;							// Rectangle structure
+PAINTSTRUCT ps;						// Used in WM_PAINT
 
 // Constants
 const char CLASS_NAME[] = "WinMain";
@@ -61,12 +65,35 @@ LRESULT WINAPI WinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-	case WM_DESTROY:
-		//tell Windows to kill this program
-		PostQuitMessage(0);
-		return 0;
+		case WM_DESTROY:
+			//tell Windows to kill this program
+			PostQuitMessage(0);
+			return 0;
+		case WM_CHAR:
+			switch (wParam)
+			{
+			case 0x08:	// Backspace
+			case 0x09:	// Tab
+			case 0x0A:	// Line feed
+			case 0x0D:	// Carriage return
+			case 0x1B:	// Escape
+				MessageBeep((UINT)-1);	// Beep but do not display
+				return 0;
+			default:		// Displayable character
+				ch = (TCHAR)wParam;		// Get the character
+				InvalidateRect(hWnd, NULL, TRUE);	// Force WM_PAINT
+				return 0;
+			}
+		case WM_PAINT:				// The window needs to be redrawn
+			hdc = BeginPaint(hWnd, &ps);		// Get handle to device context
+			GetClientRect(hWnd, &rect);			// Get the window rectangle
+			// Display the character
+			TextOut(hdc, rect.right / 2, rect.bottom / 2, &ch, 1);
+			EndPaint(hWnd, &ps);
+			return 0;
+		default:
+			return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
-	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
 //=============================================================================
