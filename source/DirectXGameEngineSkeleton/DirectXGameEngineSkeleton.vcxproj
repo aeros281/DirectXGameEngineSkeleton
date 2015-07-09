@@ -50,7 +50,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;winmm.lib;xinput.lib;d3dx9d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -66,17 +66,23 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;winmm.lib;xinput.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="megaman.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="gameError.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="megaman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

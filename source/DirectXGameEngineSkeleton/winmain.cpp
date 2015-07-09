@@ -1,106 +1,92 @@
-#define  _CRTDBG_MAP_ALLOC			// For detecting memory leaks
+// Programming 2D Games
+// Copyright (c) 2011 by:
+// Charles Kelly
+// Space War winmain.cpp v1.1
+
+#define _CRTDBG_MAP_ALLOC       // for detecting memory leaks
 #define WIN32_LEAN_AND_MEAN
 
 #include <Windows.h>
-#include <stdlib.h>					// For detecting memory leaks
-#include <crtdbg.h>					// For detecting memory leaks
-#include "graphics.h"
+#include <stdlib.h>             // for detecting memory leaks
+#include <crtdbg.h>             // for detecting memory leaks
+#include "game.h"
+#include "megaman.h"
 
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
 bool CreateMainWindow(HWND &, HINSTANCE, int);
 LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM);
-bool AnotherInstance();
 
-// Global variable
-HINSTANCE hinst;
-HDC hdc;							// Handle to device context
-TCHAR ch = ' ';						// Character entered
-RECT rect;							// Rectangle structure
-PAINTSTRUCT ps;						// Used in WM_PAINT
-Graphics *graphics;
+// Game pointer
+MegaMan *game = NULL;
+HWND hwnd = NULL;
 
 //=============================================================================
 // Starting point for a Windows application
-// Parameters are:
-//   hInstance - handle to the current instance of the application
-//   hPrevInstance - always NULL, obsolete parameter, maintained for backwards compatibilty
-//   lpCmdLine - pointer to null-terminated string of command line arguments
-//   nCmdShow - specifies how the window is to be shown
 //=============================================================================
-int WINAPI WinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR     lpCmdLine,
-	int       nCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine, int nCmdShow)
 {
 	// Check for memory leak if debug build
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#endif // defined(DEBUG) | defined(_DEBUG)
+#endif
 
-	MSG	 msg;
-	HWND hwnd = NULL;
+	MSG msg;
+
+	// Create the game, sets up message handler
+	game = new MegaMan();
 
 	// Create the window
 	if (!CreateMainWindow(hwnd, hInstance, nCmdShow))
 		return 1;
-	try {
-		// Create Graphics object
-		graphics = new Graphics();
-		// Initialize Graphics, throws GameError
-		graphics->initialize(hwnd, GAME_WIDTH, GAME_HEIGHT, FULLSCREEN);
+
+	try{
+		game->initialize(hwnd);     // throws GameError
+
 		// main message loop
 		int done = 0;
 		while (!done)
 		{
-			// PeekMessage is a non-blocking method for checking for Windows messages.
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 			{
-				//look for quit message
+				// look for quit message
 				if (msg.message == WM_QUIT)
 					done = 1;
 
-				//decode and pass messages on to WinProc
+				// decode and pass messages on to WinProc
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
 			else
-				graphics->showBackbuffer();
+				game->run(hwnd);    // run the game loop
 		}
+		safeDelete(game);           // free memory before exit
+		return msg.wParam;
 	}
 	catch (const GameError &err)
 	{
+		game->deleteAll();
+		DestroyWindow(hwnd);
 		MessageBox(NULL, err.getMessage(), "Error", MB_OK);
 	}
 	catch (...)
 	{
+		game->deleteAll();
+		DestroyWindow(hwnd);
 		MessageBox(NULL, "Unknown error occured in game.", "Error", MB_OK);
 	}
-	safeDelete(graphics);  // free memory before exit
+
+//	safeDelete(game);       // free memory before exit
 	return 0;
 }
 
 //=============================================================================
 // window event callback function
 //=============================================================================
-LRESULT WINAPI WinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT WINAPI WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch (msg)
-	{
-	case WM_DESTROY:
-		//tell Windows to kill this program
-		PostQuitMessage(0);
-		return 0;
-	case WM_CHAR:               // a character was entered by the keyboard
-		switch (wParam)         // the character is in wParam
-		{
-		case ESC_KEY:       // exit program key
-			//tell Windows to kill this program
-			PostQuitMessage(0);
-			return 0;
-		}
-	}
-	return DefWindowProc(hWnd, msg, wParam, lParam);
+	return (game->messageHandler(hwnd, msg, wParam, lParam));
 }
 
 //=============================================================================
@@ -172,24 +158,5 @@ bool CreateMainWindow(HWND &hwnd, HINSTANCE hInstance, int nCmdShow)
 	// Show the window
 	ShowWindow(hwnd, nCmdShow);
 
-	// Send a WM_PAINT message to the window procedure
-	UpdateWindow(hwnd);
 	return true;
-}
-
-//=============================================================================
-// Check for another instance of the current application
-// Returns: true if another instance is found
-//			false if this is the only one
-//=============================================================================
-bool AnotherInstance()
-{
-	HANDLE mutex;
-	// Attempt to create a mutex using our unique string
-	mutex = CreateMutex(NULL, true,
-		"The_chosen_one_5654-XYAK");
-	if (GetLastError() == ERROR_ALREADY_EXISTS)
-		return true;				// Another instance was found
-
-	return false;
 }
