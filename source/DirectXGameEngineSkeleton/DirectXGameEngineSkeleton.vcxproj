@@ -70,18 +70,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="graphics.cpp" />
-    <ClCompile Include="input.cpp" />
+    <ClCompile Include="Game Engine\game.cpp" />
+    <ClCompile Include="Game Engine\graphics.cpp" />
+    <ClCompile Include="Game Engine\input.cpp" />
     <ClCompile Include="megaman.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="constants.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="gameError.h" />
-    <ClInclude Include="graphics.h" />
-    <ClInclude Include="input.h" />
+    <ClInclude Include="Game Engine\constants.h" />
+    <ClInclude Include="Game Engine\game.h" />
+    <ClInclude Include="Game Engine\gameError.h" />
+    <ClInclude Include="Game Engine\graphics.h" />
+    <ClInclude Include="Game Engine\input.h" />
     <ClInclude Include="megaman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

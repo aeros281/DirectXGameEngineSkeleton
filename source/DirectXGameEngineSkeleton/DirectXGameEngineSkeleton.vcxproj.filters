@@ -13,42 +13,54 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="GameEngine">
+      <UniqueIdentifier>{c8341306-0ea4-4801-ab76-dbcb9419e14f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Game">
+      <UniqueIdentifier>{c7ac93d2-0665-45bd-ba49-2d99d967583c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Input">
+      <UniqueIdentifier>{c20a243e-eb5b-4b63-b094-cfe839cf82e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Graphics">
+      <UniqueIdentifier>{0098429e-fd8f-4214-969b-55ea8c3781d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="megaman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game Engine\game.cpp">
+      <Filter>GameEngine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\input.cpp">
+      <Filter>GameEngine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\graphics.cpp">
+      <Filter>GameEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="graphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameError.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="megaman.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\constants.h">
+      <Filter>GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\gameError.h">
+      <Filter>GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\game.h">
+      <Filter>GameEngine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\input.h">
+      <Filter>GameEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\graphics.h">
+      <Filter>GameEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
