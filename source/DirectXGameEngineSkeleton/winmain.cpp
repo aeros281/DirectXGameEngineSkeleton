@@ -10,6 +10,7 @@
 #include <stdlib.h>             // for detecting memory leaks
 #include <crtdbg.h>             // for detecting memory leaks
 #include "game.h"
+#include "megaman.h"
 
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
@@ -17,7 +18,7 @@ bool CreateMainWindow(HWND &, HINSTANCE, int);
 LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM);
 
 // Game pointer
-//Game *game = NULL;
+MegaMan *game = NULL;
 HWND hwnd = NULL;
 
 //=============================================================================
@@ -34,14 +35,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	MSG msg;
 
 	// Create the game, sets up message handler
-//	game = new Game();
+	game = new MegaMan();
 
 	// Create the window
 	if (!CreateMainWindow(hwnd, hInstance, nCmdShow))
 		return 1;
 
 	try{
-//		game->initialize(hwnd);     // throws GameError
+		game->initialize(hwnd);     // throws GameError
 
 		// main message loop
 		int done = 0;
@@ -57,21 +58,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-//			else
-//				game->run(hwnd);    // run the game loop
+			else
+				game->run(hwnd);    // run the game loop
 		}
-//		safeDelete(game);           // free memory before exit
+		safeDelete(game);           // free memory before exit
 		return msg.wParam;
 	}
 	catch (const GameError &err)
 	{
-//		game->deleteAll();
+		game->deleteAll();
 		DestroyWindow(hwnd);
 		MessageBox(NULL, err.getMessage(), "Error", MB_OK);
 	}
 	catch (...)
 	{
-//		game->deleteAll();
+		game->deleteAll();
 		DestroyWindow(hwnd);
 		MessageBox(NULL, "Unknown error occured in game.", "Error", MB_OK);
 	}
@@ -85,8 +86,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 //=============================================================================
 LRESULT WINAPI WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-//	return (game->messageHandler(hwnd, msg, wParam, lParam));
-	return false;
+	return (game->messageHandler(hwnd, msg, wParam, lParam));
 }
 
 //=============================================================================
