@@ -9,7 +9,7 @@
 #include <Windows.h>
 #include <stdlib.h>             // for detecting memory leaks
 #include <crtdbg.h>             // for detecting memory leaks
-#include "game.h"
+#include "Game Engine/game.h"
 #include "megaman.h"
 
 // Function prototypes
