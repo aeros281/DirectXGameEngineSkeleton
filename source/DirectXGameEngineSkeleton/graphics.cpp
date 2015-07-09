@@ -1,9 +1,3 @@
-// Programming 2D Games
-// Copyright (c) 2011 by:
-// Charles Kelly
-// Chapter 3 graphics.cpp v1.2
-// Last modification: March-6-2015
-
 #include "graphics.h"
 
 //=============================================================================
