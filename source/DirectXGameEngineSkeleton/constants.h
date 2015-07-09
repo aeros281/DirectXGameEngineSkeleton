@@ -28,6 +28,13 @@ const UINT  GAME_HEIGHT = 480;              // height of game in pixels
 // it would be possible to save and restore key mappings from a data file.
 const UCHAR ESC_KEY = VK_ESCAPE;   // escape key
 
+// game
+const double PI = 3.14159265;
+const float FRAME_RATE = 200.0f;               // the target frame rate (frames/sec)
+const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
+const float MIN_FRAME_TIME = 1.0f / FRAME_RATE;   // minimum desired time for 1 frame
+const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE; // maximum time used in calculations
+
 //=============================================================================
 // Function templates for safely dealing with pointer referenced items.
 // The functions defined by these templates may be called using a normal

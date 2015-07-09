@@ -10,6 +10,7 @@ Graphics::Graphics()
 	fullscreen = false;
 	width = GAME_WIDTH;    // width & height are replaced in initialize()
 	height = GAME_HEIGHT;
+	backColor = SETCOLOR_ARGB(255, 0, 0, 128); // dark blue
 }
 
 //=============================================================================
@@ -37,6 +38,15 @@ void Graphics::initialize(HWND hw, int w, int h, bool full)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Direct3D"));
 
 	initD3Dpp();        // init D3D presentation parameters
+	if (fullscreen)      // if full-screen mode
+	{
+		if (isAdapterCompatible())   // is the adapter compatible
+			// set the refresh rate with a compatible one
+			d3dpp.FullScreen_RefreshRateInHz = pMode.RefreshRate;
+		else
+			throw(GameError(gameErrorNS::FATAL_ERROR,
+			"The graphics device does not support the specified resolution and/or format."));
+	}
 
 	// determine if graphics card supports harware texturing and lighting and vertex shaders
 	D3DCAPS9 caps;
@@ -97,14 +107,45 @@ void Graphics::initD3Dpp()
 //=============================================================================
 HRESULT Graphics::showBackbuffer()
 {
-	result = E_FAIL;    // default to fail, replace on success
-	// (this function will be moved in later versions)
-	// Clear the backbuffer to lime green 
-	device3d->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 255, 0), 0.0f, 0);
-
 	// Display backbuffer to screen
 	result = device3d->Present(NULL, NULL, NULL, NULL);
+	return result;
+}
 
+//=============================================================================
+// Checks the adapter to see if it is compatible with the BackBuffer height,
+// width and refresh rate specified in d3dpp. Fills in the pMode structure with
+// the format of the compatible mode, if found.
+// Pre: d3dpp is initialized.
+// Post: Returns true if compatible mode found and pMode structure is filled.
+//       Returns false if no compatible mode found.
+//=============================================================================
+bool Graphics::isAdapterCompatible()
+{
+	UINT modes = direct3d->GetAdapterModeCount(D3DADAPTER_DEFAULT,
+		d3dpp.BackBufferFormat);
+	for (UINT i = 0; i < modes; i++)
+	{
+		result = direct3d->EnumAdapterModes(D3DADAPTER_DEFAULT,
+			d3dpp.BackBufferFormat,
+			i, &pMode);
+		if (pMode.Height == d3dpp.BackBufferHeight &&
+			pMode.Width == d3dpp.BackBufferWidth &&
+			pMode.RefreshRate >= d3dpp.FullScreen_RefreshRateInHz)
+			return true;
+	}
+	return false;
+}
+
+//=============================================================================
+// Test for lost device
+//=============================================================================
+HRESULT Graphics::getDeviceState()
+{
+	result = E_FAIL;    // default to fail, replace on success
+	if (device3d == NULL)
+		return  result;
+	result = device3d->TestCooperativeLevel();
 	return result;
 }
 
@@ -115,5 +156,15 @@ void Graphics::releaseAll()
 {
 	safeRelease(device3d);
 	safeRelease(direct3d);
+}
+
+//=============================================================================
+// Reset the graphics device
+//=============================================================================
+HRESULT Graphics::reset()
+{
+	initD3Dpp();                        // init D3D presentation parameters
+	result = device3d->Reset(&d3dpp);   // attempt to reset graphics device
+	return result;
 }
 
