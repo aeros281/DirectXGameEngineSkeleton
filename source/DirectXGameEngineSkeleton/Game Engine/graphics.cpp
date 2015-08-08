@@ -72,6 +72,11 @@ void Graphics::initialize(HWND hw, int w, int h, bool full)
 	if (FAILED(result))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error creating Direct3D device"));
 
+	// Try to create a sprite 
+	result = D3DXCreateSprite(device3d, &sprite);
+	if (FAILED(result))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error creating Direct3D Sprite"));
+
 }
 
 //=============================================================================
@@ -167,4 +172,51 @@ HRESULT Graphics::reset()
 	result = device3d->Reset(&d3dpp);   // attempt to reset graphics device
 	return result;
 }
+
+//=============================================================================
+// loadTexture
+//=============================================================================
+HRESULT Graphics::loadTexture(const char *filename, COLOR_ARGB transcolor, UINT &width, UINT &height, LP_TEXTURE &texture)
+{
+	// The struct for reading file info
+	D3DXIMAGE_INFO info;
+	result = E_FAIL;
+	try {
+		if (filename == NULL)
+		{
+			texture = NULL;
+			return D3DERR_INVALIDCALL;
+		}
+
+		// Get width and height from file
+		result = D3DXGetImageInfoFromFile(filename, &info);
+		if (result != D3D_OK)
+			return result;
+		width = info.Width;
+		height = info.Height;
+
+		// Create the new texture by loading from file
+		result = D3DXCreateTextureFromFileEx(device3d,
+			filename,
+			info.Width,
+			info.Height,
+			1,
+			0,
+			D3DFMT_UNKNOWN,
+			D3DPOOL_DEFAULT,
+			D3DX_DEFAULT,
+			D3DX_DEFAULT,
+			transcolor,
+			&info,
+			NULL,
+			&texture);
+
+	}
+	catch (...)
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error in Graphics::loadTexture"));
+	}
+	return result;
+}
+
 

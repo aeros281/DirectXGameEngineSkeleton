@@ -16,6 +16,8 @@ class Graphics;
 // DirectX pointer types
 #define LP_3DDEVICE LPDIRECT3DDEVICE9
 #define LP_3D       LPDIRECT3D9
+#define LP_SPRITE LPD3DXSPRITE
+#define LP_TEXTURE LPDIRECT3DTEXTURE9
 
 // Color defines
 // ARGB numbers range from 0 through 255
@@ -31,6 +33,7 @@ private:
 	// DirectX pointers and stuff
 	LP_3D       direct3d;
 	LP_3DDEVICE device3d;
+	LP_SPRITE sprite;
 	D3DPRESENT_PARAMETERS d3dpp;
 	D3DDISPLAYMODE pMode;
 
@@ -123,6 +126,15 @@ public:
 			result = device3d->EndScene();
 		return result;
 	}
+
+	// Load Texture
+	// Pre: filename = a string contain the file name destination location
+	//		transcolor = color used for determine transparent color
+	//		width = 
+	//		height = 
+	//		texture = return loaded texture
+	// Post: HRESULT (used SUCCEED or FAILED check)
+	HRESULT loadTexture(const char *filename, COLOR_ARGB transcolor, UINT &width, UINT &height, LP_TEXTURE &texture);
 };
 
 #endif
