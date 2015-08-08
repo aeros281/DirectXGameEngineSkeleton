@@ -25,16 +25,24 @@ void MegaMan::initialize(HWND hwnd)
 	// Initialize game resources
 	if (!nebulaTexture.initialize(graphics, NEBULA_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing nebula texture"));
-	if (!planetTexture.initialize(graphics, PLANET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing planet texture"));
+		"Error initializing nebula texture"));	
 	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR,
 		"Error initializing nebula image"));
+
+	if (!planetTexture.initialize(graphics, PLANET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing planet texture"));
 	if (!planet.initialize(graphics, 0, 0, 0, &planetTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR,
 		"Error initializing planet image"));
+
+	if (!trollTexture.initialize(graphics, TROLL_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing troll texture"));
+	if (!troll.initialize(graphics, 0, 0, 0, &trollTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing troll image"));
 
 	// Place planet in the central of the screen
 	planet.setX(GAME_WIDTH*0.5f - planet.getWidth()*0.5f);
@@ -68,6 +76,9 @@ void MegaMan::render()
 	graphics->spriteBegin();
 	nebula.draw();
 	planet.draw();
+	troll.setScale(0.5f);
+	troll.setColorFilter(graphicsNS::BLUE);
+	troll.draw(graphicsNS::FILTER);
 	graphics->spriteEnd();
 }
 
@@ -79,6 +90,7 @@ void MegaMan::releaseAll()
 {
 	planetTexture.onLostDevice();
 	nebulaTexture.onLostDevice();
+	trollTexture.onLostDevice();
 	Game::releaseAll();
 	return;
 }
@@ -91,6 +103,7 @@ void MegaMan::resetAll()
 {
 	nebulaTexture.onResetDevice();
 	planetTexture.onResetDevice();
+	trollTexture.onResetDevice();
 	Game::resetAll();
 	return;
 }

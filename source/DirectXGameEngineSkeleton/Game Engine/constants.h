@@ -29,7 +29,7 @@
 // graphic images
 const char NEBULA_IMAGE[] = "pictures\\orion.jpg";  // photo source NASA/courtesy of nasaimages.org 
 const char PLANET_IMAGE[] = "pictures\\planet.png"; // picture of planet
-
+const char TROLL_IMAGE[] = "pictures\\troll.jpg";
 // window
 const char CLASS_NAME[] = "Spacewar";
 const char GAME_TITLE[] = "Spacewar";

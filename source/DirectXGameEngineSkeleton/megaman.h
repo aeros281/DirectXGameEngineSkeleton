@@ -18,7 +18,8 @@ private:
 	TextureManager planetTexture;
 	Image planet;
 	Image nebula;
-
+	TextureManager trollTexture;
+	Image troll;
 public:
 	// Constructor
 	MegaMan();
