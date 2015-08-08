@@ -219,4 +219,61 @@ HRESULT Graphics::loadTexture(const char *filename, COLOR_ARGB transcolor, UINT 
 	return result;
 }
 
+//=============================================================================
+// drawSprite
+//=============================================================================
+void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
+{
+	if (spriteData.texture == NULL) // check if no texture
+		return;
 
+	// Find center of the sprite
+	D3DXVECTOR2 spriteCenter = D3DXVECTOR2(
+		(float)(spriteData.width / 2 * spriteData.scale),
+		(float)(spriteData.height / 2 * spriteData.scale));
+
+	// Screen position of the sprite
+	D3DXVECTOR2 translate = D3DXVECTOR2((float)(spriteData.x), (float)(spriteData.y));
+
+	// Scaling
+	D3DXVECTOR2 scaling = D3DXVECTOR2(spriteData.scale, spriteData.scale);
+
+	// Flip horizontally
+	if (spriteData.flipHorizontal)
+	{
+		scaling.x *= -1;				// Negative X scale to flip
+		// Get center of flipped image
+		spriteCenter.x == (float)(spriteData.width*spriteData.scale);
+		// Flip occure around left edge, translate right to put
+		// flipped image in the same location as original
+		translate.x += (float)(spriteData.width*spriteData.scale);
+	}
+
+	// Flip vertically
+	if (spriteData.flipVertical)
+	{
+		scaling.y *= -1;					// Negative Y scale to flip
+		// Get center of flipped image
+		spriteCenter.y -= (float)(spriteData.height*spriteData.scale);
+		// Flip occure around top edge, translate down to put
+		// flipped image in the same location as original
+		translate.y += (float)(spriteData.height*spriteData.scale);
+	}
+
+	// Create transform matrix
+	D3DXMATRIX matrix;
+	D3DXMatrixTransformation2D(
+		&matrix,
+		NULL,
+		0.0f,
+		&scaling,
+		&spriteCenter,
+		(float)spriteData.angle,
+		&translate);
+
+	sprite->SetTransform(&matrix);
+
+	// Draw the sprite
+	sprite->Draw(spriteData.texture, &spriteData.rect, NULL, NULL, color);
+
+}
