@@ -30,6 +30,8 @@
 const char NEBULA_IMAGE[] = "pictures\\orion.jpg";  // photo source NASA/courtesy of nasaimages.org 
 const char PLANET_IMAGE[] = "pictures\\planet.png"; // picture of planet
 const char TROLL_IMAGE[] = "pictures\\troll.jpg";
+const char COWBOY_IMAGE[] = "pictures\\Cowboy2.png";
+const char DARK_SABER_IMAGE[] = "pictures\\darksaber.png";
 // window
 const char CLASS_NAME[] = "Spacewar";
 const char GAME_TITLE[] = "Spacewar";

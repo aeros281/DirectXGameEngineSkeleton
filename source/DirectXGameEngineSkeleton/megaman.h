@@ -20,6 +20,8 @@ private:
 	Image nebula;
 	TextureManager trollTexture;
 	Image troll;
+	TextureManager dsTexture;
+	Image darksaber;
 public:
 	// Constructor
 	MegaMan();
