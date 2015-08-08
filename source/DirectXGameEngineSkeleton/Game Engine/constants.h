@@ -77,6 +77,6 @@ inline void safeDeleteArray(T& ptr)
 }
 #define SAFE_DELETE_ARRAY safeDeleteArray   // for backward compatiblility
 
-
+#define TRANSCOLOR  SETCOLOR_ARGB(0,255,0,255)  // transparent color (magenta)
 
 #endif

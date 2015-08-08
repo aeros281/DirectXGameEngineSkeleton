@@ -42,6 +42,9 @@
     <ClCompile Include="Game Engine\graphics.cpp">
       <Filter>GameEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Game Engine\textureManager.cpp">
+      <Filter>GameEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="megaman.h">
@@ -60,6 +63,9 @@
       <Filter>GameEngine\Input</Filter>
     </ClInclude>
     <ClInclude Include="Game Engine\graphics.h">
+      <Filter>GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\textureManager.h">
       <Filter>GameEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
