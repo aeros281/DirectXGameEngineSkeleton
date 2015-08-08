@@ -22,6 +22,23 @@ void MegaMan::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
 
+	// Initialize game resources
+	if (!nebulaTexture.initialize(graphics, NEBULA_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing nebula texture"));
+	if (!planetTexture.initialize(graphics, PLANET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing planet texture"));
+	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing nebula image"));
+	if (!planet.initialize(graphics, 0, 0, 0, &planetTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing planet image"));
+
+	// Place planet in the central of the screen
+	planet.setX(GAME_WIDTH*0.5f - planet.getWidth()*0.5f);
+	planet.setY(GAME_HEIGHT*0.5f - planet.getHeight()*0.5f);
 	return;
 }
 
@@ -48,6 +65,10 @@ void MegaMan::collisions()
 //=============================================================================
 void MegaMan::render()
 {
+	graphics->spriteBegin();
+	nebula.draw();
+	planet.draw();
+	graphics->spriteEnd();
 }
 
 //=============================================================================
@@ -56,6 +77,8 @@ void MegaMan::render()
 //=============================================================================
 void MegaMan::releaseAll()
 {
+	planetTexture.onLostDevice();
+	nebulaTexture.onLostDevice();
 	Game::releaseAll();
 	return;
 }
@@ -66,6 +89,8 @@ void MegaMan::releaseAll()
 //=============================================================================
 void MegaMan::resetAll()
 {
+	nebulaTexture.onResetDevice();
+	planetTexture.onResetDevice();
 	Game::resetAll();
 	return;
 }

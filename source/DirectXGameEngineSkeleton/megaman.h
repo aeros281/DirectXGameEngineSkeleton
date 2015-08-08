@@ -3,6 +3,8 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include "Game Engine/game.h"
+#include "Game Engine/textureManager.h"
+#include "Game Engine/image.h"
 
 //=============================================================================
 // Create game class
@@ -11,6 +13,11 @@ class MegaMan : public Game
 {
 private:
 	// variables
+	// Game items
+	TextureManager nebulaTexture;
+	TextureManager planetTexture;
+	Image planet;
+	Image nebula;
 
 public:
 	// Constructor

@@ -5,24 +5,18 @@
 #ifdef _DEBUG
 #define D3D_DEBUG_INFO
 #endif
-
-class Graphics;
-
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "constants.h"
 #include "gameError.h"
 
 // DirectX pointer types
+#define LP_TEXTURE  LPDIRECT3DTEXTURE9
+#define LP_SPRITE   LPD3DXSPRITE
 #define LP_3DDEVICE LPDIRECT3DDEVICE9
 #define LP_3D       LPDIRECT3D9
-#define LP_SPRITE LPD3DXSPRITE
-#define LP_TEXTURE LPDIRECT3DTEXTURE9
 
 // Color defines
-// ARGB numbers range from 0 through 255
-// a = Alpha channel (transparency where 255 is opaque)
-// r = Red, g = Green, b = Blue
 #define COLOR_ARGB DWORD
 #define SETCOLOR_ARGB(a,r,g,b) \
 	((COLOR_ARGB)((((a)& 0xff) << 24) | (((r)& 0xff) << 16) | (((g)& 0xff) << 8) | ((b)& 0xff)))
@@ -59,19 +53,19 @@ namespace graphicsNS
 	enum DISPLAY_MODE{ TOGGLE, FULLSCREEN, WINDOW };
 }
 
-// SpriteData: the properties required by Graphics::drawSprite to draw a spite
+// SpriteData: The properties required by Graphics::drawSprite to draw a sprite
 struct SpriteData
 {
-	int width;				// width of the sprite in pixels
-	int height;				// height of the sprite in pixels
-	float x;				// Screen location (top left corner of the sprite
-	float y;
-	float scale;			// < 1 smaller, > 1 bigger
-	float angle;			// rotation angle in radians
-	RECT rect;				// used to select an image from a larger texture
-	LP_TEXTURE texture;		// pointer to texture
-	bool flipHorizontal;	// true to flip sprite horizontally (mirror)
-	bool flipVertical;		// true to flip sprite vertically
+	int         width;      // width of sprite in pixels
+	int         height;     // height of sprite in pixels
+	float       x;          // screen location (top left corner of sprite)
+	float       y;
+	float       scale;      // <1 smaller, >1 bigger
+	float       angle;      // rotation angle in radians
+	RECT        rect;       // used to select an image from a larger texture
+	LP_TEXTURE  texture;    // pointer to texture
+	bool        flipHorizontal; // true to flip sprite horizontally (mirror)
+	bool        flipVertical;   // true to flip sprite vertically
 };
 
 class Graphics
@@ -80,7 +74,7 @@ private:
 	// DirectX pointers and stuff
 	LP_3D       direct3d;
 	LP_3DDEVICE device3d;
-	LP_SPRITE sprite;
+	LP_SPRITE   sprite;
 	D3DPRESENT_PARAMETERS d3dpp;
 	D3DDISPLAYMODE pMode;
 
@@ -114,6 +108,14 @@ public:
 	//      fullscreen = true for full screen, false for window
 	void    initialize(HWND hw, int width, int height, bool fullscreen);
 
+	// Load the texture into default D3D memory (normal texture use)
+	// For internal engine use only. Use the TextureManager class to load game textures.
+	// Pre: filename = name of texture file.
+	//      transcolor = transparent color
+	// Post: width and height = size of texture
+	//       texture points to texture
+	HRESULT loadTexture(const char * filename, COLOR_ARGB transcolor, UINT &width, UINT &height, LP_TEXTURE &texture);
+
 	// Display the offscreen backbuffer to the screen.
 	HRESULT showBackbuffer();
 
@@ -125,26 +127,41 @@ public:
 	//       Returns false if no compatible mode found.
 	bool    isAdapterCompatible();
 
+	// Draw the sprite described in SpriteData structure.
+	// color is optional, it is applied as a filter, WHITE is default (no change).
+	// Creates a sprite Begin/End pair.
+	// Pre: spriteData.rect defines the portion of spriteData.texture to draw
+	//      spriteData.rect.right must be right edge + 1
+	//      spriteData.rect.bottom must be bottom edge + 1
+	void    drawSprite(const SpriteData &spriteData,           // sprite to draw
+		COLOR_ARGB color = graphicsNS::WHITE);      // default to white color filter (no change)
+
 	// Reset the graphics device.
 	HRESULT reset();
 
+	// Toggle, fullscreen or window display mode
+	// Pre: All user created D3DPOOL_DEFAULT surfaces are freed.
+	// Post: All user surfaces are recreated.
+	void    changeDisplayMode(graphicsNS::DISPLAY_MODE mode = graphicsNS::TOGGLE);
+
 	// get functions
 	// Return direct3d.
-	LP_3D get3D()               { return direct3d; }
+	LP_3D   get3D()             { return direct3d; }
 
 	// Return device3d.
 	LP_3DDEVICE get3Ddevice()   { return device3d; }
 
+	// Return sprite
+	LP_SPRITE   getSprite()     { return sprite; }
+
 	// Return handle to device context (window).
-	HDC getDC()                 { return GetDC(hwnd); }
+	HDC     getDC()             { return GetDC(hwnd); }
 
 	// Test for lost device
 	HRESULT getDeviceState();
 
-	//=============================================================================
-	// Inline functions for speed. How much more speed? It depends on the game and
-	// computer. Improvements of 3 or 4 percent have been observed.
-	//=============================================================================
+	// Return fullscreen
+	bool    getFullscreen()     { return fullscreen; }
 
 	// Set color used to clear screen
 	void setBackColor(COLOR_ARGB c) { backColor = c; }
@@ -174,23 +191,21 @@ public:
 		return result;
 	}
 
-	// Load Texture
-	// Pre: filename = a string contain the file name destination location
-	//		transcolor = color used for determine transparent color
-	//		width = 
-	//		height = 
-	//		texture = return loaded texture
-	// Post: HRESULT (used SUCCEED or FAILED check)
-	HRESULT loadTexture(const char *filename, COLOR_ARGB transcolor, UINT &width, UINT &height, LP_TEXTURE &texture);
+	//=============================================================================
+	// Sprite Begin
+	//=============================================================================
+	void spriteBegin()
+	{
+		sprite->Begin(D3DXSPRITE_ALPHABLEND);
+	}
 
-	// Draw the sprite described in SpriteData structre
-	// Color is optional, it is applied like a filter, white is default
-	// Pre: sprite->Begin() is called
-	// Post: sprite->End() is called
-	//		SpriteData.rect.right must be right edge + 1
-	//		SpriteData.rect.bottom must be bottom edge + 1
-	void drawSprite(const SpriteData &spriteData, COLOR_ARGB color);
+	//=============================================================================
+	// Sprite End
+	//=============================================================================
+	void spriteEnd()
+	{
+		sprite->End();
+	}
 };
 
 #endif
-

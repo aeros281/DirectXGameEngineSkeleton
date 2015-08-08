@@ -159,8 +159,8 @@ HRESULT Graphics::getDeviceState()
 //=============================================================================
 void Graphics::releaseAll()
 {
-	safeRelease(device3d);
-	safeRelease(direct3d);
+	SAFE_RELEASE(device3d);
+	SAFE_RELEASE(direct3d);
 }
 
 //=============================================================================
