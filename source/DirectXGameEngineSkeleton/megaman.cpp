@@ -34,7 +34,6 @@ void MegaMan::initialize(HWND hwnd)
 	darksaber.setFrames(0, 59);
 	darksaber.setCurrentFrame(0);
 	darksaber.setFrameDelay((float) 1/30);
-	darksaber.setScale(0.5f);
 
 	// Place cowboy in the central of the screen
 	darksaber.setX(0);
@@ -64,6 +63,14 @@ void MegaMan::update()
 	{
 		darksaber.setX(darksaber.getX() - step);
 	}
+
+	// Scaling world
+	if (input->wasKeyPressed(VK_RETURN))
+		darksaber.setScale(darksaber.getScale() + 0.5f);
+
+	if (input->wasKeyPressed(VK_SPACE) &&  darksaber.getScale() > 0)
+		darksaber.setScale(darksaber.getScale() - 0.2f);
+
 	darksaber.update(frameTime);
 }
 
