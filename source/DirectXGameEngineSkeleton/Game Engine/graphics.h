@@ -85,7 +85,7 @@ private:
 	int         width;
 	int         height;
 	COLOR_ARGB  backColor;      // background color
-
+	float gameScale;		// The scale of graphics of the game, should set in view port instead
 	// (For internal engine use only. No user serviceable parts inside.)
 	// Initialize D3D presentation parameters
 	void    initD3Dpp();
@@ -206,6 +206,12 @@ public:
 	{
 		sprite->End();
 	}
+
+	//*************************
+	// Fields
+	//*************************
+	float getGameScale() const { return gameScale; }
+	void setGameScale(float val) { gameScale = val; }
 };
 
 #endif

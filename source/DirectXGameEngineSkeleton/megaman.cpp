@@ -23,26 +23,6 @@ void MegaMan::initialize(HWND hwnd)
 	Game::initialize(hwnd); // throws GameError
 
 	// Initialize game resources
-	if (!nebulaTexture.initialize(graphics, NEBULA_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing nebula texture"));	
-	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing nebula image"));
-
-	if (!planetTexture.initialize(graphics, PLANET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing planet texture"));
-	if (!planet.initialize(graphics, 0, 0, 0, &planetTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing planet image"));
-
-	if (!trollTexture.initialize(graphics, TROLL_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing troll texture"));
-	if (!troll.initialize(graphics, 0, 0, 0, &trollTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing troll image"));
 
 	if (!dsTexture.initialize(graphics, DARK_SABER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR,
@@ -51,16 +31,27 @@ void MegaMan::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR,
 		"Error initializing darksaber image"));
 
+	if (!rmTexture.initialize(graphics, ROCKMAN_RUN_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing rockman texture"));
+	if (!rockman.initialize(graphics, 24, 24, 3, &rmTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing rockman image"));
+
 	darksaber.setFrames(0, 59);
 	darksaber.setCurrentFrame(0);
 	darksaber.setFrameDelay((float) 1/30);
 
-	// Place planet in the central of the screen
-	planet.setX(GAME_WIDTH*0.5f - planet.getWidth()*0.5f);
-	planet.setY(GAME_HEIGHT*0.5f - planet.getHeight()*0.5f);
+	rockman.setFrames(0, 2);
+	rockman.setCurrentFrame(0);
+	rockman.setFrameDelay((float)1 / 5);
 
-	// Place cowboy in the central of the screen
-	darksaber.setX(280);
+	rockman.setX(200);
+	rockman.setY(100);
+
+	// Game Object position is center around the AABB, so we must move
+	// its center somehow to show the full object sprite
+	darksaber.setX(546/2);
 	darksaber.setY(279/2);
 	return;
 }
@@ -70,7 +61,33 @@ void MegaMan::initialize(HWND hwnd)
 //=============================================================================
 void MegaMan::update()
 {
+	UINT step = 10;
+	if (input->wasKeyPressed(VK_RIGHT))
+	{
+		rockman.setX(rockman.getX() + step);
+	}
+	if (input->wasKeyPressed(VK_UP))
+	{
+		rockman.setY(rockman.getY() + step);
+	}
+	if (input->wasKeyPressed(VK_DOWN))
+	{
+		rockman.setY(rockman.getY() - step);
+	}
+	if (input->wasKeyPressed(VK_LEFT))
+	{
+		rockman.setX(rockman.getX() - step);
+	}
+
+	// Scaling world
+	if (input->wasKeyPressed(VK_RETURN))
+		graphics->setGameScale(graphics->getGameScale() + 0.5f);
+
+	if (input->wasKeyPressed(VK_SPACE) &&  graphics->getGameScale() > 0)
+		graphics->setGameScale(graphics->getGameScale() - 0.2f);
+
 	darksaber.update(frameTime);
+	rockman.update(frameTime);
 }
 
 //=============================================================================
@@ -94,6 +111,7 @@ void MegaMan::render()
 
 
 	darksaber.draw();
+	rockman.draw();
 
 	graphics->spriteEnd();
 }
@@ -104,10 +122,8 @@ void MegaMan::render()
 //=============================================================================
 void MegaMan::releaseAll()
 {
-	planetTexture.onLostDevice();
-	nebulaTexture.onLostDevice();
-	trollTexture.onLostDevice();
 	dsTexture.onLostDevice();
+	rmTexture.onLostDevice();
 	Game::releaseAll();
 	return;
 }
@@ -118,10 +134,8 @@ void MegaMan::releaseAll()
 //=============================================================================
 void MegaMan::resetAll()
 {
-	nebulaTexture.onResetDevice();
-	planetTexture.onResetDevice();
-	trollTexture.onResetDevice();
 	dsTexture.onResetDevice();
+	rmTexture.onResetDevice();
 	Game::resetAll();
 	return;
 }
