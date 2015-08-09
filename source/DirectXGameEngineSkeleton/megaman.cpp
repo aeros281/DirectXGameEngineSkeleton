@@ -60,8 +60,8 @@ void MegaMan::initialize(HWND hwnd)
 	planet.setY(GAME_HEIGHT*0.5f - planet.getHeight()*0.5f);
 
 	// Place cowboy in the central of the screen
-	darksaber.setX(GAME_WIDTH*0.5f - darksaber.getWidth()*0.5f);
-	darksaber.setY(GAME_HEIGHT*0.5f - darksaber.getHeight()*0.5f);
+	darksaber.setX(280);
+	darksaber.setY(279/2);
 	return;
 }
 
@@ -91,11 +91,7 @@ void MegaMan::collisions()
 void MegaMan::render()
 {
 	graphics->spriteBegin();
-	nebula.draw();
-	planet.draw();
-	troll.setScale(0.5f);
-	troll.setColorFilter(graphicsNS::BLUE);
-	troll.draw(graphicsNS::FILTER);
+
 
 	darksaber.draw();
 

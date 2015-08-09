@@ -233,7 +233,7 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 		(float)(spriteData.height / 2 * spriteData.scale));
 
 	// Screen position of the sprite
-	D3DXVECTOR2 translate = D3DXVECTOR2((float)(spriteData.x), (float)(spriteData.y));
+	D3DXVECTOR2 translate = D3DXVECTOR2(0.0f, 0.0f);
 
 	// Scaling
 	D3DXVECTOR2 scaling = D3DXVECTOR2(spriteData.scale, spriteData.scale);
@@ -273,7 +273,27 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 
 	sprite->SetTransform(&matrix);
 
+
+	//*************************************************
+	// Turn the world upside down, follow camera angle
+	//*************************************************
+	D3DXMATRIX mt;
+	D3DXMatrixIdentity(&mt);
+
+	D3DXVECTOR2 camera = D3DXVECTOR2(0, GAME_HEIGHT);
+
+	mt._22 = -1.0f;
+	mt._41 = -camera.x;
+	mt._42 = camera.y;
+
+	D3DXVECTOR4 vp_pos;
+	D3DXVECTOR3 position = D3DXVECTOR3(spriteData.x, spriteData.y, 1.0f);
+	D3DXVec3Transform(&vp_pos, &position, &mt); // vp_pos = position * mt
+
+	D3DXVECTOR3 p = D3DXVECTOR3(vp_pos.x, vp_pos.y, 0);
+	D3DXVECTOR3 center = D3DXVECTOR3((float)spriteData.width / 2, (float)spriteData.height / 2, 0);
+
 	// Draw the sprite
-	sprite->Draw(spriteData.texture, &spriteData.rect, NULL, NULL, color);
+	sprite->Draw(spriteData.texture, &spriteData.rect, &center, &p, color);
 
 }
