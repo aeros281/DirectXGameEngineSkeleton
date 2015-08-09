@@ -31,13 +31,28 @@ void MegaMan::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR,
 		"Error initializing darksaber image"));
 
+	if (!rmTexture.initialize(graphics, ROCKMAN_RUN_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing rockman texture"));
+	if (!rockman.initialize(graphics, 24, 24, 3, &rmTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing rockman image"));
+
 	darksaber.setFrames(0, 59);
 	darksaber.setCurrentFrame(0);
 	darksaber.setFrameDelay((float) 1/30);
 
-	// Place cowboy in the central of the screen
-	darksaber.setX(0);
-	darksaber.setY(0);
+	rockman.setFrames(0, 2);
+	rockman.setCurrentFrame(0);
+	rockman.setFrameDelay((float)1 / 5);
+
+	rockman.setX(200);
+	rockman.setY(100);
+
+	// Game Object position is center around the AABB, so we must move
+	// its center somehow to show the full object sprite
+	darksaber.setX(546/2);
+	darksaber.setY(279/2);
 	return;
 }
 
@@ -49,29 +64,30 @@ void MegaMan::update()
 	UINT step = 10;
 	if (input->wasKeyPressed(VK_RIGHT))
 	{
-		darksaber.setX(darksaber.getX() + step);
+		rockman.setX(rockman.getX() + step);
 	}
 	if (input->wasKeyPressed(VK_UP))
 	{
-		darksaber.setY(darksaber.getY() + step);
+		rockman.setY(rockman.getY() + step);
 	}
 	if (input->wasKeyPressed(VK_DOWN))
 	{
-		darksaber.setY(darksaber.getY() - step);
+		rockman.setY(rockman.getY() - step);
 	}
 	if (input->wasKeyPressed(VK_LEFT))
 	{
-		darksaber.setX(darksaber.getX() - step);
+		rockman.setX(rockman.getX() - step);
 	}
 
 	// Scaling world
 	if (input->wasKeyPressed(VK_RETURN))
-		darksaber.setScale(darksaber.getScale() + 0.5f);
+		graphics->setGameScale(graphics->getGameScale() + 0.5f);
 
-	if (input->wasKeyPressed(VK_SPACE) &&  darksaber.getScale() > 0)
-		darksaber.setScale(darksaber.getScale() - 0.2f);
+	if (input->wasKeyPressed(VK_SPACE) &&  graphics->getGameScale() > 0)
+		graphics->setGameScale(graphics->getGameScale() - 0.2f);
 
 	darksaber.update(frameTime);
+	rockman.update(frameTime);
 }
 
 //=============================================================================
@@ -95,6 +111,7 @@ void MegaMan::render()
 
 
 	darksaber.draw();
+	rockman.draw();
 
 	graphics->spriteEnd();
 }
@@ -106,6 +123,7 @@ void MegaMan::render()
 void MegaMan::releaseAll()
 {
 	dsTexture.onLostDevice();
+	rmTexture.onLostDevice();
 	Game::releaseAll();
 	return;
 }
@@ -117,6 +135,7 @@ void MegaMan::releaseAll()
 void MegaMan::resetAll()
 {
 	dsTexture.onResetDevice();
+	rmTexture.onResetDevice();
 	Game::resetAll();
 	return;
 }

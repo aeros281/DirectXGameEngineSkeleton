@@ -11,6 +11,7 @@ Graphics::Graphics()
 	width = GAME_WIDTH;    // width & height are replaced in initialize()
 	height = GAME_HEIGHT;
 	backColor = SETCOLOR_ARGB(255, 0, 0, 128); // dark blue
+	gameScale = 1;
 }
 
 //=============================================================================
@@ -224,29 +225,30 @@ HRESULT Graphics::loadTexture(const char *filename, COLOR_ARGB transcolor, UINT 
 //=============================================================================
 void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 {
+	float scale = gameScale;
 	if (spriteData.texture == NULL) // check if no texture
 		return;
 
 	// Find center of the sprite
 	D3DXVECTOR2 spriteCenter = D3DXVECTOR2(
-		(float)(spriteData.width / 2 * spriteData.scale),
-		(float)(spriteData.height / 2 * spriteData.scale));
+		(float)(spriteData.width / 2 * scale),
+		(float)(spriteData.height / 2 * scale));
 
 	// Screen position of the sprite
 	D3DXVECTOR2 translate = D3DXVECTOR2(0.0f, 0.0f);
 
 	// Scaling
-	D3DXVECTOR2 scaling = D3DXVECTOR2(spriteData.scale, spriteData.scale);
+	D3DXVECTOR2 scaling = D3DXVECTOR2(scale, scale);
 
 	// Flip horizontally
 	if (spriteData.flipHorizontal)
 	{
 		scaling.x *= -1;				// Negative X scale to flip
 		// Get center of flipped image
-		spriteCenter.x == (float)(spriteData.width*spriteData.scale);
+		spriteCenter.x == (float)(spriteData.width*scale);
 		// Flip occure around left edge, translate right to put
 		// flipped image in the same location as original
-		translate.x += (float)(spriteData.width*spriteData.scale);
+		translate.x += (float)(spriteData.width*scale);
 	}
 
 	// Flip vertically
@@ -254,10 +256,10 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 	{
 		scaling.y *= -1;					// Negative Y scale to flip
 		// Get center of flipped image
-		spriteCenter.y -= (float)(spriteData.height*spriteData.scale);
+		spriteCenter.y -= (float)(spriteData.height*scale);
 		// Flip occure around top edge, translate down to put
 		// flipped image in the same location as original
-		translate.y += (float)(spriteData.height*spriteData.scale);
+		translate.y += (float)(spriteData.height*scale);
 	}
 
 
@@ -272,8 +274,8 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 	D3DXVECTOR2 camera = D3DXVECTOR2(0, GAME_HEIGHT);
 
 	mt._22 = -1.0f;
-	mt._41 = -camera.x / spriteData.scale;
-	mt._42 = camera.y / spriteData.scale;
+	mt._41 = -camera.x / scale;
+	mt._42 = camera.y / scale;
 
 	D3DXVECTOR4 vp_pos;
 	D3DXVECTOR3 position = D3DXVECTOR3(spriteData.x, spriteData.y, 1.0f);

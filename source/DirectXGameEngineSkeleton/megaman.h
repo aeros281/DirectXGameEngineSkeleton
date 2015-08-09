@@ -17,6 +17,9 @@ private:
 	// Game items
 	TextureManager dsTexture;
 	Image darksaber;
+
+	TextureManager rmTexture;
+	Image rockman;
 public:
 	// Constructor
 	MegaMan();
