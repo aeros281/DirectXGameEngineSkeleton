@@ -23,26 +23,6 @@ void MegaMan::initialize(HWND hwnd)
 	Game::initialize(hwnd); // throws GameError
 
 	// Initialize game resources
-	if (!nebulaTexture.initialize(graphics, NEBULA_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing nebula texture"));	
-	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing nebula image"));
-
-	if (!planetTexture.initialize(graphics, PLANET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing planet texture"));
-	if (!planet.initialize(graphics, 0, 0, 0, &planetTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing planet image"));
-
-	if (!trollTexture.initialize(graphics, TROLL_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing troll texture"));
-	if (!troll.initialize(graphics, 0, 0, 0, &trollTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing troll image"));
 
 	if (!dsTexture.initialize(graphics, DARK_SABER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR,
@@ -54,14 +34,11 @@ void MegaMan::initialize(HWND hwnd)
 	darksaber.setFrames(0, 59);
 	darksaber.setCurrentFrame(0);
 	darksaber.setFrameDelay((float) 1/30);
-
-	// Place planet in the central of the screen
-	planet.setX(GAME_WIDTH*0.5f - planet.getWidth()*0.5f);
-	planet.setY(GAME_HEIGHT*0.5f - planet.getHeight()*0.5f);
+	darksaber.setScale(0.5f);
 
 	// Place cowboy in the central of the screen
-	darksaber.setX(280);
-	darksaber.setY(279/2);
+	darksaber.setX(0);
+	darksaber.setY(0);
 	return;
 }
 
@@ -70,6 +47,23 @@ void MegaMan::initialize(HWND hwnd)
 //=============================================================================
 void MegaMan::update()
 {
+	UINT step = 10;
+	if (input->wasKeyPressed(VK_RIGHT))
+	{
+		darksaber.setX(darksaber.getX() + step);
+	}
+	if (input->wasKeyPressed(VK_UP))
+	{
+		darksaber.setY(darksaber.getY() + step);
+	}
+	if (input->wasKeyPressed(VK_DOWN))
+	{
+		darksaber.setY(darksaber.getY() - step);
+	}
+	if (input->wasKeyPressed(VK_LEFT))
+	{
+		darksaber.setX(darksaber.getX() - step);
+	}
 	darksaber.update(frameTime);
 }
 
@@ -104,9 +98,6 @@ void MegaMan::render()
 //=============================================================================
 void MegaMan::releaseAll()
 {
-	planetTexture.onLostDevice();
-	nebulaTexture.onLostDevice();
-	trollTexture.onLostDevice();
 	dsTexture.onLostDevice();
 	Game::releaseAll();
 	return;
@@ -118,9 +109,6 @@ void MegaMan::releaseAll()
 //=============================================================================
 void MegaMan::resetAll()
 {
-	nebulaTexture.onResetDevice();
-	planetTexture.onResetDevice();
-	trollTexture.onResetDevice();
 	dsTexture.onResetDevice();
 	Game::resetAll();
 	return;
