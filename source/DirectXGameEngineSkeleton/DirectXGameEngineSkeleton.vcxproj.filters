@@ -19,11 +19,20 @@
     <Filter Include="GameEngine\Game">
       <UniqueIdentifier>{c7ac93d2-0665-45bd-ba49-2d99d967583c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\Input">
+    <Filter Include="GameEngine\DirectX component">
+      <UniqueIdentifier>{1d4e0147-cef7-4a0f-be9e-fea677216f19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\DirectX component\Graphics">
+      <UniqueIdentifier>{0098429e-fd8f-4214-969b-55ea8c3781d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\DirectX component\Input">
       <UniqueIdentifier>{c20a243e-eb5b-4b63-b094-cfe839cf82e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\Graphics">
-      <UniqueIdentifier>{0098429e-fd8f-4214-969b-55ea8c3781d5}</UniqueIdentifier>
+    <Filter Include="GameEngine\DirectX component\Graphics\Image">
+      <UniqueIdentifier>{41bd298f-4fa7-46ab-89b1-ba6e096d3c75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\DirectX component\Graphics\TextureManager">
+      <UniqueIdentifier>{d3b1915b-cf4b-48e0-bb6a-7d927d510c42}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,10 +46,16 @@
       <Filter>GameEngine\Game</Filter>
     </ClCompile>
     <ClCompile Include="Game Engine\input.cpp">
-      <Filter>GameEngine\Input</Filter>
+      <Filter>GameEngine\DirectX component\Input</Filter>
     </ClCompile>
     <ClCompile Include="Game Engine\graphics.cpp">
-      <Filter>GameEngine\Graphics</Filter>
+      <Filter>GameEngine\DirectX component\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\image.cpp">
+      <Filter>GameEngine\DirectX component\Graphics\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\textureManager.cpp">
+      <Filter>GameEngine\DirectX component\Graphics\TextureManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,10 +72,16 @@
       <Filter>GameEngine\Game</Filter>
     </ClInclude>
     <ClInclude Include="Game Engine\input.h">
-      <Filter>GameEngine\Input</Filter>
+      <Filter>GameEngine\DirectX component\Input</Filter>
     </ClInclude>
     <ClInclude Include="Game Engine\graphics.h">
-      <Filter>GameEngine\Graphics</Filter>
+      <Filter>GameEngine\DirectX component\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\image.h">
+      <Filter>GameEngine\DirectX component\Graphics\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\textureManager.h">
+      <Filter>GameEngine\DirectX component\Graphics\TextureManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

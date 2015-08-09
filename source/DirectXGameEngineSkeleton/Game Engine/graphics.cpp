@@ -72,6 +72,11 @@ void Graphics::initialize(HWND hw, int w, int h, bool full)
 	if (FAILED(result))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error creating Direct3D device"));
 
+	// Try to create a sprite 
+	result = D3DXCreateSprite(device3d, &sprite);
+	if (FAILED(result))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error creating Direct3D Sprite"));
+
 }
 
 //=============================================================================
@@ -154,8 +159,8 @@ HRESULT Graphics::getDeviceState()
 //=============================================================================
 void Graphics::releaseAll()
 {
-	safeRelease(device3d);
-	safeRelease(direct3d);
+	SAFE_RELEASE(device3d);
+	SAFE_RELEASE(direct3d);
 }
 
 //=============================================================================
@@ -168,3 +173,127 @@ HRESULT Graphics::reset()
 	return result;
 }
 
+//=============================================================================
+// loadTexture
+//=============================================================================
+HRESULT Graphics::loadTexture(const char *filename, COLOR_ARGB transcolor, UINT &width, UINT &height, LP_TEXTURE &texture)
+{
+	// The struct for reading file info
+	D3DXIMAGE_INFO info;
+	result = E_FAIL;
+	try {
+		if (filename == NULL)
+		{
+			texture = NULL;
+			return D3DERR_INVALIDCALL;
+		}
+
+		// Get width and height from file
+		result = D3DXGetImageInfoFromFile(filename, &info);
+		if (result != D3D_OK)
+			return result;
+		width = info.Width;
+		height = info.Height;
+
+		// Create the new texture by loading from file
+		result = D3DXCreateTextureFromFileEx(device3d,
+			filename,
+			info.Width,
+			info.Height,
+			1,
+			0,
+			D3DFMT_UNKNOWN,
+			D3DPOOL_DEFAULT,
+			D3DX_DEFAULT,
+			D3DX_DEFAULT,
+			transcolor,
+			&info,
+			NULL,
+			&texture);
+
+	}
+	catch (...)
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error in Graphics::loadTexture"));
+	}
+	return result;
+}
+
+//=============================================================================
+// drawSprite
+//=============================================================================
+void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
+{
+	if (spriteData.texture == NULL) // check if no texture
+		return;
+
+	// Find center of the sprite
+	D3DXVECTOR2 spriteCenter = D3DXVECTOR2(
+		(float)(spriteData.width / 2 * spriteData.scale),
+		(float)(spriteData.height / 2 * spriteData.scale));
+
+	// Screen position of the sprite
+	D3DXVECTOR2 translate = D3DXVECTOR2(0.0f, 0.0f);
+
+	// Scaling
+	D3DXVECTOR2 scaling = D3DXVECTOR2(spriteData.scale, spriteData.scale);
+
+	// Flip horizontally
+	if (spriteData.flipHorizontal)
+	{
+		scaling.x *= -1;				// Negative X scale to flip
+		// Get center of flipped image
+		spriteCenter.x == (float)(spriteData.width*spriteData.scale);
+		// Flip occure around left edge, translate right to put
+		// flipped image in the same location as original
+		translate.x += (float)(spriteData.width*spriteData.scale);
+	}
+
+	// Flip vertically
+	if (spriteData.flipVertical)
+	{
+		scaling.y *= -1;					// Negative Y scale to flip
+		// Get center of flipped image
+		spriteCenter.y -= (float)(spriteData.height*spriteData.scale);
+		// Flip occure around top edge, translate down to put
+		// flipped image in the same location as original
+		translate.y += (float)(spriteData.height*spriteData.scale);
+	}
+
+	// Create transform matrix
+	D3DXMATRIX matrix;
+	D3DXMatrixTransformation2D(
+		&matrix,
+		NULL,
+		0.0f,
+		&scaling,
+		&spriteCenter,
+		(float)spriteData.angle,
+		&translate);
+
+	sprite->SetTransform(&matrix);
+
+
+	//*************************************************
+	// Turn the world upside down, follow camera angle
+	//*************************************************
+	D3DXMATRIX mt;
+	D3DXMatrixIdentity(&mt);
+
+	D3DXVECTOR2 camera = D3DXVECTOR2(0, GAME_HEIGHT);
+
+	mt._22 = -1.0f;
+	mt._41 = -camera.x;
+	mt._42 = camera.y;
+
+	D3DXVECTOR4 vp_pos;
+	D3DXVECTOR3 position = D3DXVECTOR3(spriteData.x, spriteData.y, 1.0f);
+	D3DXVec3Transform(&vp_pos, &position, &mt); // vp_pos = position * mt
+
+	D3DXVECTOR3 p = D3DXVECTOR3(vp_pos.x, vp_pos.y, 0);
+	D3DXVECTOR3 center = D3DXVECTOR3((float)spriteData.width / 2, (float)spriteData.height / 2, 0);
+
+	// Draw the sprite
+	sprite->Draw(spriteData.texture, &spriteData.rect, &center, &p, color);
+
+}

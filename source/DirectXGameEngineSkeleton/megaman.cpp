@@ -22,6 +22,46 @@ void MegaMan::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
 
+	// Initialize game resources
+	if (!nebulaTexture.initialize(graphics, NEBULA_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing nebula texture"));	
+	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing nebula image"));
+
+	if (!planetTexture.initialize(graphics, PLANET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing planet texture"));
+	if (!planet.initialize(graphics, 0, 0, 0, &planetTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing planet image"));
+
+	if (!trollTexture.initialize(graphics, TROLL_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing troll texture"));
+	if (!troll.initialize(graphics, 0, 0, 0, &trollTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing troll image"));
+
+	if (!dsTexture.initialize(graphics, DARK_SABER_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing darksaber texture"));
+	if (!darksaber.initialize(graphics, 546, 279, 12, &dsTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR,
+		"Error initializing darksaber image"));
+
+	darksaber.setFrames(0, 59);
+	darksaber.setCurrentFrame(0);
+	darksaber.setFrameDelay((float) 1/30);
+
+	// Place planet in the central of the screen
+	planet.setX(GAME_WIDTH*0.5f - planet.getWidth()*0.5f);
+	planet.setY(GAME_HEIGHT*0.5f - planet.getHeight()*0.5f);
+
+	// Place cowboy in the central of the screen
+	darksaber.setX(280);
+	darksaber.setY(279/2);
 	return;
 }
 
@@ -29,7 +69,9 @@ void MegaMan::initialize(HWND hwnd)
 // Update all game items
 //=============================================================================
 void MegaMan::update()
-{}
+{
+	darksaber.update(frameTime);
+}
 
 //=============================================================================
 // Artificial Intelligence
@@ -48,6 +90,12 @@ void MegaMan::collisions()
 //=============================================================================
 void MegaMan::render()
 {
+	graphics->spriteBegin();
+
+
+	darksaber.draw();
+
+	graphics->spriteEnd();
 }
 
 //=============================================================================
@@ -56,6 +104,10 @@ void MegaMan::render()
 //=============================================================================
 void MegaMan::releaseAll()
 {
+	planetTexture.onLostDevice();
+	nebulaTexture.onLostDevice();
+	trollTexture.onLostDevice();
+	dsTexture.onLostDevice();
 	Game::releaseAll();
 	return;
 }
@@ -66,6 +118,10 @@ void MegaMan::releaseAll()
 //=============================================================================
 void MegaMan::resetAll()
 {
+	nebulaTexture.onResetDevice();
+	planetTexture.onResetDevice();
+	trollTexture.onResetDevice();
+	dsTexture.onResetDevice();
 	Game::resetAll();
 	return;
 }
