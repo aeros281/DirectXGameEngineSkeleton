@@ -75,6 +75,9 @@
     <ClCompile Include="Game Engine\UserInputComponent.cpp">
       <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
     </ClCompile>
+    <ClCompile Include="Game Engine\AutoInputComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="megaman.h">
@@ -108,6 +111,9 @@
       <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
     </ClInclude>
     <ClInclude Include="Game Engine\UserInputComponent.h">
+      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\AutoInputComponent.h">
       <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
     </ClInclude>
   </ItemGroup>

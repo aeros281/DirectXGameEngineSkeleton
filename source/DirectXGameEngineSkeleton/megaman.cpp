@@ -1,5 +1,6 @@
 #include "megaman.h"
 #include "Game Engine\UserInputComponent.h"
+#include "Game Engine\AutoInputComponent.h"
 
 //=============================================================================
 // Constructor
@@ -44,6 +45,10 @@ void MegaMan::initialize(HWND hwnd)
 void MegaMan::update()
 {
 	UINT step = 10;
+
+	// Change InputComponent
+	if (input->wasKeyPressed(VK_DOWN))
+		megaman->setInputComponent(new AutoInputComponent());
 
 	// Scaling world
 	if (input->wasKeyPressed(VK_RETURN))

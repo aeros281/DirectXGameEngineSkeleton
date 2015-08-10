@@ -70,6 +70,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game Engine\AutoInputComponent.cpp" />
     <ClCompile Include="Game Engine\game.cpp" />
     <ClCompile Include="Game Engine\GameObject.cpp" />
     <ClCompile Include="Game Engine\graphics.cpp" />
@@ -82,6 +83,7 @@
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game Engine\AutoInputComponent.h" />
     <ClInclude Include="Game Engine\constants.h" />
     <ClInclude Include="Game Engine\game.h" />
     <ClInclude Include="Game Engine\gameError.h" />

@@ -112,5 +112,6 @@ void GameObject::requestChangeSprite()
 
 void GameObject::setInputComponent(InputComponent *iCom)
 {
+	SAFE_DELETE(inputCom);
 	inputCom = iCom;
 }

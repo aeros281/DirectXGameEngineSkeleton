@@ -12,7 +12,7 @@ Graphics::Graphics()
 	height = GAME_HEIGHT;
 	backColor = SETCOLOR_ARGB(255, 0, 0, 128); // dark blue
 	gameScale = 1;
-	camera = D3DXVECTOR2(0, GAME_HEIGHT);
+	camera = D3DXVECTOR2(0,(float) GAME_HEIGHT);
 }
 
 //=============================================================================
@@ -246,7 +246,7 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 	{
 		scaling.x *= -1;				// Negative X scale to flip
 		// Get center of flipped image
-		spriteCenter.x == (float)(spriteData.width*scale);
+		spriteCenter.x -= (float)(spriteData.width*scale);
 		// Flip occure around left edge, translate right to put
 		// flipped image in the same location as original
 		translate.x += (float)(spriteData.width*scale);
