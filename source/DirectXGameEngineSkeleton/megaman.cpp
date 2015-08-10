@@ -1,4 +1,5 @@
 #include "megaman.h"
+#include "Game Engine\UserInputComponent.h"
 
 //=============================================================================
 // Constructor
@@ -7,6 +8,7 @@ MegaMan::MegaMan()
 {
 	rmTexture = new TextureManager();
 	megaman = new GameObject();
+	megaman->setInputComponent(new UserInputComponent());
 
 }
 

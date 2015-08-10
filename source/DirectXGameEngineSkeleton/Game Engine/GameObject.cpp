@@ -6,8 +6,8 @@
 //=================================================
 GameObject::GameObject(UINT _x, UINT _y, FLOAT _vx, FLOAT _vy)
 {
-	x = _x;
-	y = _y;
+	x = (float) _x;
+	y = (float) _y;
 	vx = _vx;
 	vy = _vy;
 	oldVx = vx;
@@ -16,9 +16,8 @@ GameObject::GameObject(UINT _x, UINT _y, FLOAT _vx, FLOAT _vy)
 	width = 31;
 	height = 30;
 
-	concurrentFrameTime = 0;
-
 	sprite = new Image();
+	inputCom = NULL;
 }
 
 GameObject::GameObject() : GameObject(16, 15, 0, 0)
@@ -57,19 +56,8 @@ void GameObject::update(FLOAT frameTime, Input *input)
 {
 	oldVx = vx;
 
-	/* Handle input */
-	if (input->isKeyDown(VK_RIGHT))
-	{
-		vx = MAX_VELOCITY;
-	}
-	else if (input->isKeyDown(VK_LEFT))
-	{
-		vx = -MAX_VELOCITY;
-	}
-	else
-	{
-		vx = 0;
-	}
+	if (inputCom != NULL)
+		inputCom->handleInput(this, input);
 
 	if (oldVx != vx)
 		requestChangeSprite();
@@ -120,4 +108,9 @@ void GameObject::requestChangeSprite()
 
 	sprite->setFrames(startFrame, endFrame);
 	sprite->setCurrentFrame(startFrame);
+}
+
+void GameObject::setInputComponent(InputComponent *iCom)
+{
+	inputCom = iCom;
 }

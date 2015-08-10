@@ -37,6 +37,12 @@
     <Filter Include="GameEngine\GameObject">
       <UniqueIdentifier>{f54d02d8-b4f4-4771-ad47-b046edc9ea21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GameObject\Component">
+      <UniqueIdentifier>{f9c61c93-209e-4e03-b682-e20be44f122f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObject\Component\InputComponent">
+      <UniqueIdentifier>{29e61266-5b74-45cf-a725-9d1e0ac7d258}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
@@ -62,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="Game Engine\GameObject.cpp">
       <Filter>GameEngine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\InputComponent.cpp">
+      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\UserInputComponent.cpp">
+      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="Game Engine\GameObject.h">
       <Filter>GameEngine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\InputComponent.h">
+      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\UserInputComponent.h">
+      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

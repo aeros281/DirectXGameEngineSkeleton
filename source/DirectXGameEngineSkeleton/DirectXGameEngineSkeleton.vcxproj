@@ -75,7 +75,9 @@
     <ClCompile Include="Game Engine\graphics.cpp" />
     <ClCompile Include="Game Engine\image.cpp" />
     <ClCompile Include="Game Engine\input.cpp" />
+    <ClCompile Include="Game Engine\InputComponent.cpp" />
     <ClCompile Include="Game Engine\textureManager.cpp" />
+    <ClCompile Include="Game Engine\UserInputComponent.cpp" />
     <ClCompile Include="megaman.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
@@ -87,7 +89,9 @@
     <ClInclude Include="Game Engine\graphics.h" />
     <ClInclude Include="Game Engine\image.h" />
     <ClInclude Include="Game Engine\input.h" />
+    <ClInclude Include="Game Engine\InputComponent.h" />
     <ClInclude Include="Game Engine\textureManager.h" />
+    <ClInclude Include="Game Engine\UserInputComponent.h" />
     <ClInclude Include="megaman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
