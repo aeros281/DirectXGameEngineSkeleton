@@ -6,6 +6,7 @@
 #include "Game Engine/textureManager.h"
 #include "Game Engine/image.h"
 #include <WinUser.h>
+#include "Game Engine/GameObject.h"
 
 //=============================================================================
 // Create game class
@@ -15,11 +16,10 @@ class MegaMan : public Game
 private:
 	// variables
 	// Game items
-	TextureManager dsTexture;
-	Image darksaber;
 
-	TextureManager rmTexture;
-	Image rockman;
+	TextureManager *rmTexture;
+
+	GameObject *megaman;
 public:
 	// Constructor
 	MegaMan();

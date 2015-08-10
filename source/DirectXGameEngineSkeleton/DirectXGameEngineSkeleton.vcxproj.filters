@@ -34,6 +34,9 @@
     <Filter Include="GameEngine\DirectX component\Graphics\TextureManager">
       <UniqueIdentifier>{d3b1915b-cf4b-48e0-bb6a-7d927d510c42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GameObject">
+      <UniqueIdentifier>{f54d02d8-b4f4-4771-ad47-b046edc9ea21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
@@ -56,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="Game Engine\textureManager.cpp">
       <Filter>GameEngine\DirectX component\Graphics\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\GameObject.cpp">
+      <Filter>GameEngine\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="Game Engine\textureManager.h">
       <Filter>GameEngine\DirectX component\Graphics\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\GameObject.h">
+      <Filter>GameEngine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
