@@ -18,6 +18,7 @@ GameObject::GameObject(UINT _x, UINT _y, FLOAT _vx, FLOAT _vy)
 
 	sprite = new Image();
 	inputCom = NULL;
+	graphicCom = new GraphicComponent();
 }
 
 GameObject::GameObject() : GameObject(16, 15, 0, 0)
@@ -38,9 +39,8 @@ GameObject::~GameObject()
 bool GameObject::spriteInitialize(Graphics *g, TextureManager *TextureM)
 {
 	try {
-		sprite->initialize(g, width, height, ncols, TextureM);
-		requestChangeSprite();
-		sprite->setFrameDelay((float) 1 / 6);
+		graphicCom->initialize(g, 31, 30, 6, TextureM, (float)1 / 6);
+		graphicCom->requestChangeSprite(this, 1);
 	}
 	catch (...){
 		return false;
@@ -65,7 +65,7 @@ void GameObject::update(FLOAT frameTime, Input *input)
 	/* Update object properties */
 	x += vx * frameTime;
 
-	sprite->update(frameTime);
+	graphicCom->update(frameTime);
 }
 
 //=================================================
@@ -73,45 +73,22 @@ void GameObject::update(FLOAT frameTime, Input *input)
 //=================================================
 void GameObject::render()
 {
-	sprite->setX(x);
-	sprite->setY(y);
-	sprite->draw();
+	graphicCom->draw(this);
 }
 
 void GameObject::requestChangeSprite()
 {
-	UINT startFrame = 0, endFrame = 0;
-	if (vx == 0) // Not running
-	{
-		if (oldVx >= 0)
-		{
-			startFrame = 0;
-			endFrame = 0;
-		}
-		else
-		{
-			startFrame = 6;
-			endFrame = 6;
-		}
-	}
-	else
-	{
-		startFrame = 2;
-		endFrame = 4;
-	}
-	
-	if (vx < 0)
-	{
-		startFrame += ncols;
-		endFrame += ncols;
-	}
-
-	sprite->setFrames(startFrame, endFrame);
-	sprite->setCurrentFrame(startFrame);
+	graphicCom->requestChangeSprite(this, 1);
 }
 
 void GameObject::setInputComponent(InputComponent *iCom)
 {
 	SAFE_DELETE(inputCom);
 	inputCom = iCom;
+}
+
+void GameObject::setGraphicComponent(GraphicComponent *gCom)
+{
+	SAFE_DELETE(graphicCom);
+	graphicCom = gCom;
 }

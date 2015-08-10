@@ -43,6 +43,18 @@
     <Filter Include="GameEngine\GameObject\Component\InputComponent">
       <UniqueIdentifier>{29e61266-5b74-45cf-a725-9d1e0ac7d258}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GameObject\Component\GraphicComponent">
+      <UniqueIdentifier>{20cf14fb-90e2-4425-b638-d184cbe32a2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObject\Component\InputComponent\AutoInput">
+      <UniqueIdentifier>{fe23b580-d2ca-4be6-b6b9-281697a849cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObject\Component\InputComponent\UserInput">
+      <UniqueIdentifier>{a873378f-276d-4a8a-87af-25a725ee7dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObject\Component\GraphicComponent\NewFilter1">
+      <UniqueIdentifier>{72ed3985-58a7-413f-a7fa-e48e6170962b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
@@ -72,11 +84,14 @@
     <ClCompile Include="Game Engine\InputComponent.cpp">
       <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
     </ClCompile>
-    <ClCompile Include="Game Engine\UserInputComponent.cpp">
-      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
+    <ClCompile Include="Game Engine\GraphicComponent.cpp">
+      <Filter>GameEngine\GameObject\Component\GraphicComponent</Filter>
     </ClCompile>
     <ClCompile Include="Game Engine\AutoInputComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>GameEngine\GameObject\Component\InputComponent\AutoInput</Filter>
+    </ClCompile>
+    <ClCompile Include="Game Engine\UserInputComponent.cpp">
+      <Filter>GameEngine\GameObject\Component\InputComponent\UserInput</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,11 +125,14 @@
     <ClInclude Include="Game Engine\InputComponent.h">
       <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
     </ClInclude>
-    <ClInclude Include="Game Engine\UserInputComponent.h">
-      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
+    <ClInclude Include="Game Engine\GraphicComponent.h">
+      <Filter>GameEngine\GameObject\Component\GraphicComponent</Filter>
     </ClInclude>
     <ClInclude Include="Game Engine\AutoInputComponent.h">
-      <Filter>GameEngine\GameObject\Component\InputComponent</Filter>
+      <Filter>GameEngine\GameObject\Component\InputComponent\AutoInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Game Engine\UserInputComponent.h">
+      <Filter>GameEngine\GameObject\Component\InputComponent\UserInput</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

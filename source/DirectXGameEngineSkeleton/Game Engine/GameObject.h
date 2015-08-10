@@ -3,11 +3,13 @@
 #define WIN32_LEAN_AND_MEAN
 
 class InputComponent;
+class GraphicComponent;
 
 #include <windows.h>
 #include "image.h"
 #include "input.h"
 #include "InputComponent.h"
+#include "GraphicComponent.h"
 
 class GameObject
 {
@@ -25,6 +27,7 @@ private:
 
 	// Components list
 	InputComponent *inputCom;
+	GraphicComponent *graphicCom;
 public:
 	// GameObject constructor with no parameter
 	// Should set x = y = vx = vy = 0
@@ -39,7 +42,10 @@ public:
 	bool spriteInitialize(Graphics *g, TextureManager *TextureM);
 
 	// set InputComponent object
-	void setInputComponent(InputComponent *iCom);;
+	void setInputComponent(InputComponent *iCom);
+
+	// set GraphicComponent object
+	void setGraphicComponent(GraphicComponent *gCom);
 
 	// Update GameObject
 	// frameTime = used for calculate object physics and sprite animation
@@ -67,5 +73,8 @@ public:
 
 	FLOAT getVY() const { return vy; }
 	void setVY(FLOAT val) { vy = val; }
+
+	FLOAT getOldVX() const { return oldVx; }
+	void setOldVX(FLOAT val) { oldVx = val; }
 };
 #endif

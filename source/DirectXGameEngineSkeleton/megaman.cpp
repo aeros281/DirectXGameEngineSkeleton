@@ -49,6 +49,8 @@ void MegaMan::update()
 	// Change InputComponent
 	if (input->wasKeyPressed(VK_DOWN))
 		megaman->setInputComponent(new AutoInputComponent());
+	if (input->wasKeyPressed(VK_UP))
+		megaman->setInputComponent(new UserInputComponent());
 
 	// Scaling world
 	if (input->wasKeyPressed(VK_RETURN))
