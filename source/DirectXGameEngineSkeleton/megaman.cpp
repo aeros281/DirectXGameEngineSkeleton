@@ -86,6 +86,29 @@ void MegaMan::update()
 	if (input->wasKeyPressed(VK_SPACE) &&  graphics->getGameScale() > 0)
 		graphics->setGameScale(graphics->getGameScale() - 0.2f);
 
+	// Move camera code
+	D3DXVECTOR2 camera_angle = graphics->getCamera();
+	if (input->wasKeyPressed(VK_NUMPAD6))
+	{
+		camera_angle.x += step;
+		graphics->setCamera(camera_angle);
+	}
+	if (input->wasKeyPressed(VK_NUMPAD4))
+	{
+		camera_angle.x -= step;
+		graphics->setCamera(camera_angle);
+	}
+	if (input->wasKeyPressed(VK_NUMPAD2))
+	{
+		camera_angle.y -= step;
+		graphics->setCamera(camera_angle);
+	}
+	if (input->wasKeyPressed(VK_NUMPAD8))
+	{
+		camera_angle.y += step;
+		graphics->setCamera(camera_angle);
+	}
+
 	darksaber.update(frameTime);
 	rockman.update(frameTime);
 }

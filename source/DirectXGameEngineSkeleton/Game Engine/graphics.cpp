@@ -12,6 +12,7 @@ Graphics::Graphics()
 	height = GAME_HEIGHT;
 	backColor = SETCOLOR_ARGB(255, 0, 0, 128); // dark blue
 	gameScale = 1;
+	camera = D3DXVECTOR2(0, GAME_HEIGHT);
 }
 
 //=============================================================================
@@ -270,8 +271,6 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 	//*************************************************
 	D3DXMATRIX mt;
 	D3DXMatrixIdentity(&mt);
-
-	D3DXVECTOR2 camera = D3DXVECTOR2(0, GAME_HEIGHT);
 
 	mt._22 = -1.0f;
 	mt._41 = -camera.x / scale;
