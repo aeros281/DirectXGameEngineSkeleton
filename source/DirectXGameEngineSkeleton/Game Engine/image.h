@@ -72,6 +72,9 @@ public:
 	// Return delay between frames of animation.
 	virtual float getFrameDelay()   { return frameDelay; }
 
+	// Return number of columns
+	virtual int getNumberofColumns() { return cols; }
+
 	// Return number of starting frame.
 	virtual int   getStartFrame()   { return startFrame; }
 

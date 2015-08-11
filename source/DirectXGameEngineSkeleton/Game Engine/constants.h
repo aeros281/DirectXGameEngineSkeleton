@@ -21,7 +21,7 @@
 #define SAFE_ON_LOST_DEVICE(ptr)    { if(ptr) { ptr->onLostDevice(); } }
 // Safely call onResetDevice
 #define SAFE_ON_RESET_DEVICE(ptr)   { if(ptr) { ptr->onResetDevice(); } }
-#define TRANSCOLOR  SETCOLOR_ARGB(0,255,0,255)  // transparent color (magenta)
+#define TRANSCOLOR  SETCOLOR_ARGB(0,0,102,102)  // transparent color
 
 //-----------------------------------------------
 //                  Constants
@@ -33,6 +33,7 @@ const char TROLL_IMAGE[] = "pictures\\troll.jpg";
 const char COWBOY_IMAGE[] = "pictures\\Cowboy2.png";
 const char DARK_SABER_IMAGE[] = "pictures\\darksaber.png";
 const char ROCKMAN_RUN_IMAGE[] = "pictures\\rockman_run.png";
+const char MEGAMAN_SPRITE[] = "pictures\\MegaManSprite.png";
 // window
 const char CLASS_NAME[] = "Spacewar";
 const char GAME_TITLE[] = "Spacewar";

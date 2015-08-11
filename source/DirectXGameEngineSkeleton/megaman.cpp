@@ -1,10 +1,17 @@
 #include "megaman.h"
+#include "Game Engine\UserInputComponent.h"
+#include "Game Engine\AutoInputComponent.h"
 
 //=============================================================================
 // Constructor
 //=============================================================================
 MegaMan::MegaMan()
-{}
+{
+	rmTexture = new TextureManager();
+	megaman = new GameObject();
+	megaman->setInputComponent(new UserInputComponent());
+
+}
 
 //=============================================================================
 // Destructor
@@ -24,35 +31,11 @@ void MegaMan::initialize(HWND hwnd)
 
 	// Initialize game resources
 
-	if (!dsTexture.initialize(graphics, DARK_SABER_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing darksaber texture"));
-	if (!darksaber.initialize(graphics, 546, 279, 12, &dsTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing darksaber image"));
-
-	if (!rmTexture.initialize(graphics, ROCKMAN_RUN_IMAGE))
+	if (!rmTexture->initialize(graphics, MEGAMAN_SPRITE))
 		throw(GameError(gameErrorNS::FATAL_ERROR,
 		"Error initializing rockman texture"));
-	if (!rockman.initialize(graphics, 24, 24, 3, &rmTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR,
-		"Error initializing rockman image"));
 
-	darksaber.setFrames(0, 59);
-	darksaber.setCurrentFrame(0);
-	darksaber.setFrameDelay((float) 1/30);
-
-	rockman.setFrames(0, 2);
-	rockman.setCurrentFrame(0);
-	rockman.setFrameDelay((float)1 / 5);
-
-	rockman.setX(200);
-	rockman.setY(100);
-
-	// Game Object position is center around the AABB, so we must move
-	// its center somehow to show the full object sprite
-	darksaber.setX(546/2);
-	darksaber.setY(279/2);
+	megaman->spriteInitialize(graphics, rmTexture);
 	return;
 }
 
@@ -62,22 +45,12 @@ void MegaMan::initialize(HWND hwnd)
 void MegaMan::update()
 {
 	UINT step = 10;
-	if (input->wasKeyPressed(VK_RIGHT))
-	{
-		rockman.setX(rockman.getX() + step);
-	}
-	if (input->wasKeyPressed(VK_UP))
-	{
-		rockman.setY(rockman.getY() + step);
-	}
+
+	// Change InputComponent
 	if (input->wasKeyPressed(VK_DOWN))
-	{
-		rockman.setY(rockman.getY() - step);
-	}
-	if (input->wasKeyPressed(VK_LEFT))
-	{
-		rockman.setX(rockman.getX() - step);
-	}
+		megaman->setInputComponent(new AutoInputComponent());
+	if (input->wasKeyPressed(VK_UP))
+		megaman->setInputComponent(new UserInputComponent());
 
 	// Scaling world
 	if (input->wasKeyPressed(VK_RETURN))
@@ -86,8 +59,30 @@ void MegaMan::update()
 	if (input->wasKeyPressed(VK_SPACE) &&  graphics->getGameScale() > 0)
 		graphics->setGameScale(graphics->getGameScale() - 0.2f);
 
-	darksaber.update(frameTime);
-	rockman.update(frameTime);
+	// Move camera code
+	D3DXVECTOR2 camera_angle = graphics->getCamera();
+	if (input->wasKeyPressed(VK_NUMPAD6))
+	{
+		camera_angle.x += step;
+		graphics->setCamera(camera_angle);
+	}
+	if (input->wasKeyPressed(VK_NUMPAD4))
+	{
+		camera_angle.x -= step;
+		graphics->setCamera(camera_angle);
+	}
+	if (input->wasKeyPressed(VK_NUMPAD2))
+	{
+		camera_angle.y -= step;
+		graphics->setCamera(camera_angle);
+	}
+	if (input->wasKeyPressed(VK_NUMPAD8))
+	{
+		camera_angle.y += step;
+		graphics->setCamera(camera_angle);
+	}
+
+	megaman->update(frameTime, input);
 }
 
 //=============================================================================
@@ -109,9 +104,7 @@ void MegaMan::render()
 {
 	graphics->spriteBegin();
 
-
-	darksaber.draw();
-	rockman.draw();
+	megaman->render();
 
 	graphics->spriteEnd();
 }
@@ -122,8 +115,7 @@ void MegaMan::render()
 //=============================================================================
 void MegaMan::releaseAll()
 {
-	dsTexture.onLostDevice();
-	rmTexture.onLostDevice();
+	rmTexture->onLostDevice();
 	Game::releaseAll();
 	return;
 }
@@ -134,8 +126,7 @@ void MegaMan::releaseAll()
 //=============================================================================
 void MegaMan::resetAll()
 {
-	dsTexture.onResetDevice();
-	rmTexture.onResetDevice();
+	rmTexture->onResetDevice();
 	Game::resetAll();
 	return;
 }

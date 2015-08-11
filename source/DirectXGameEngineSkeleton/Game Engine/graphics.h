@@ -86,6 +86,7 @@ private:
 	int         height;
 	COLOR_ARGB  backColor;      // background color
 	float gameScale;		// The scale of graphics of the game, should set in view port instead
+	D3DXVECTOR2 camera;		// camera false class, should be replaced soon
 	// (For internal engine use only. No user serviceable parts inside.)
 	// Initialize D3D presentation parameters
 	void    initD3Dpp();
@@ -212,6 +213,8 @@ public:
 	//*************************
 	float getGameScale() const { return gameScale; }
 	void setGameScale(float val) { gameScale = val; }
+	D3DXVECTOR2 getCamera() const { return camera; }
+	void setCamera(D3DXVECTOR2 val) { camera = val; }
 };
 
 #endif

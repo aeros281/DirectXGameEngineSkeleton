@@ -70,22 +70,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game Engine\AutoInputComponent.cpp" />
     <ClCompile Include="Game Engine\game.cpp" />
+    <ClCompile Include="Game Engine\GameObject.cpp" />
+    <ClCompile Include="Game Engine\GraphicComponent.cpp" />
     <ClCompile Include="Game Engine\graphics.cpp" />
     <ClCompile Include="Game Engine\image.cpp" />
     <ClCompile Include="Game Engine\input.cpp" />
+    <ClCompile Include="Game Engine\InputComponent.cpp" />
     <ClCompile Include="Game Engine\textureManager.cpp" />
+    <ClCompile Include="Game Engine\UserInputComponent.cpp" />
     <ClCompile Include="megaman.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game Engine\AutoInputComponent.h" />
     <ClInclude Include="Game Engine\constants.h" />
     <ClInclude Include="Game Engine\game.h" />
     <ClInclude Include="Game Engine\gameError.h" />
+    <ClInclude Include="Game Engine\GameObject.h" />
+    <ClInclude Include="Game Engine\GraphicComponent.h" />
     <ClInclude Include="Game Engine\graphics.h" />
     <ClInclude Include="Game Engine\image.h" />
     <ClInclude Include="Game Engine\input.h" />
+    <ClInclude Include="Game Engine\InputComponent.h" />
     <ClInclude Include="Game Engine\textureManager.h" />
+    <ClInclude Include="Game Engine\UserInputComponent.h" />
     <ClInclude Include="megaman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
