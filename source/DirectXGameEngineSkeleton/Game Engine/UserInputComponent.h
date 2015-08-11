@@ -14,7 +14,7 @@ public:
 
 	void handleInput(GameObject *object, Input *input);
 
-	const INT MAX_VELOCITY = 60; // Pixels per seconds
+	const FLOAT MAX_VELOCITY = 3.0f; // Pixels per seconds
 	const UCHAR A_KEY = 0x41;
 	const UCHAR D_KEY = 0x44;
 	const UCHAR S_KEY = 0x53;

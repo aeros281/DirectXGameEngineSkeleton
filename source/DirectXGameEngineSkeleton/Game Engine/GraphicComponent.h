@@ -21,7 +21,7 @@ public:
 
 	void update(FLOAT frameTime);
 
-	void draw(GameObject *object);
+	void draw(GameObject *object, float interpolation);
 
 	virtual bool requestChangeSprite(GameObject *object, UINT message);
 };

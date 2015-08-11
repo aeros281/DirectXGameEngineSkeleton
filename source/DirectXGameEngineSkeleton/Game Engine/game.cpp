@@ -179,9 +179,9 @@ void Game::run(HWND hwnd)
 
 	// Power saving code, requires winmm.lib
 	// if not enough time has elapsed for desired frame rate
-	if (frameTime < MIN_FRAME_TIME)
+	if (frameTime < STEP_TIME)
 	{
-		sleepTime = (DWORD)((MIN_FRAME_TIME - frameTime) * 1000);
+		sleepTime = (DWORD)((STEP_TIME - frameTime) * 1000);
 		timeBeginPeriod(1);         // Request 1mS resolution for windows timer
 		Sleep(sleepTime);           // release cpu for sleepTime
 		timeEndPeriod(1);           // End 1mS timer resolution
@@ -192,17 +192,27 @@ void Game::run(HWND hwnd)
 		fps = (fps*0.99f) + (0.01f / frameTime);  // average fps
 	if (frameTime > MAX_FRAME_TIME) // if frame rate is very slow
 		frameTime = MAX_FRAME_TIME; // limit maximum frameTime
-	timeStart = timeEnd;
 
 	// update(), ai(), and collisions() are pure virtual functions.
 	// These functions must be provided in the class that inherits from Game.
 	if (!paused)                    // if not paused
 	{
-		update();                   // update all game items
-		ai();                       // artificial intelligence
-		collisions();               // handle collisions
-		input->vibrateControllers(frameTime); // handle controller vibration
+		while (frameTime >= STEP_TIME)
+		{
+			update();                   // update all game items
+			ai();                       // artificial intelligence
+			collisions();               // handle collisions
+			input->vibrateControllers(frameTime); // handle controller vibration
+
+			frameTime -= STEP_TIME;
+		}
 	}
+
+	timeStart = timeEnd;
+	timeStart.QuadPart -= frameTime;
+
+	interpolation = frameTime / (float)STEP_TIME;
+
 	renderGame();                   // draw all game items
 	input->readControllers();       // read state of controllers
 

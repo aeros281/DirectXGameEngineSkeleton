@@ -51,10 +51,10 @@ public:
 	// frameTime = used for calculate object physics and sprite animation
 	// g = pointer to Graphics object
 	// input = pointer to Input object
-	void update(FLOAT frameTime, Input *input);
+	void update(Input *input);
 
 	// Render GameObject
-	void render();
+	void render(float intepolation);
 
 	// Change Sprite
 	void requestChangeSprite();

@@ -39,7 +39,7 @@ GameObject::~GameObject()
 bool GameObject::spriteInitialize(Graphics *g, TextureManager *TextureM)
 {
 	try {
-		graphicCom->initialize(g, 31, 30, 6, TextureM, (float)1 / 6);
+		graphicCom->initialize(g, 31, 30, 6, TextureM, (float)1);
 		graphicCom->requestChangeSprite(this, 1);
 	}
 	catch (...){
@@ -52,7 +52,7 @@ bool GameObject::spriteInitialize(Graphics *g, TextureManager *TextureM)
 //=================================================
 // update
 //=================================================
-void GameObject::update(FLOAT frameTime, Input *input)
+void GameObject::update(Input *input)
 {
 	oldVx = vx;
 
@@ -63,17 +63,17 @@ void GameObject::update(FLOAT frameTime, Input *input)
 		requestChangeSprite();
 
 	/* Update object properties */
-	x += vx * frameTime;
+	x += vx;
 
-	graphicCom->update(frameTime);
+	graphicCom->update(0.3f);
 }
 
 //=================================================
 // render
 //=================================================
-void GameObject::render()
+void GameObject::render(float intepolation)
 {
-	graphicCom->draw(this);
+	graphicCom->draw(this, intepolation);
 }
 
 void GameObject::requestChangeSprite()

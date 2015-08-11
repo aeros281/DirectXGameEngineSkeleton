@@ -82,7 +82,7 @@ void MegaMan::update()
 		graphics->setCamera(camera_angle);
 	}
 
-	megaman->update(frameTime, input);
+	megaman->update(input);
 }
 
 //=============================================================================
@@ -104,7 +104,7 @@ void MegaMan::render()
 {
 	graphics->spriteBegin();
 
-	megaman->render();
+	megaman->render(interpolation);
 
 	graphics->spriteEnd();
 }

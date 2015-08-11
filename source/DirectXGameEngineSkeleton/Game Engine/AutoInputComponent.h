@@ -10,7 +10,7 @@ public:
 	AutoInputComponent();
 	~AutoInputComponent();
 
-	const INT MAX_VELOCITY = 60;
+	const FLOAT MAX_VELOCITY = 3.0f;
 	void handleInput(GameObject *object, Input *input);
 };
 #endif

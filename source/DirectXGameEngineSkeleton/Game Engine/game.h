@@ -23,6 +23,7 @@ protected:
 	LARGE_INTEGER timeEnd;      // Performance Counter end value
 	LARGE_INTEGER timerFreq;    // Performance Counter frequency
 	float   frameTime;          // time required for last frame
+	float interpolation;		// time requried for render smoothness
 	float   fps;                // frames per second
 	DWORD   sleepTime;          // number of milli-seconds to sleep between frames
 	bool    paused;             // true if game is paused

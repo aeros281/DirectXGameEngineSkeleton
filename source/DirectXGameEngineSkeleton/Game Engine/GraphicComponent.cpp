@@ -18,12 +18,12 @@ void GraphicComponent::update(FLOAT frameTime)
 	image->update(frameTime);
 }
 
-void GraphicComponent::draw(GameObject *object)
+void GraphicComponent::draw(GameObject *object, float interpolation)
 {
 	if (image != NULL)
 	{
-		image->setX(object->getX());
-		image->setY(object->getY());
+		image->setX(object->getX() + object->getVX() * interpolation);
+		image->setY(object->getY() + object->getVY() * interpolation);
 		image->draw();
 	}
 }
