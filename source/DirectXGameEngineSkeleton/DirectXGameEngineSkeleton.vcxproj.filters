@@ -52,8 +52,8 @@
     <Filter Include="GameEngine\GameObject\Component\InputComponent\UserInput">
       <UniqueIdentifier>{a873378f-276d-4a8a-87af-25a725ee7dcf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\GameObject\Component\GraphicComponent\NewFilter1">
-      <UniqueIdentifier>{72ed3985-58a7-413f-a7fa-e48e6170962b}</UniqueIdentifier>
+    <Filter Include="GameEngine\GameObject\MessageParam">
+      <UniqueIdentifier>{d9710a3f-9bbe-48d5-86e8-85cf676c1272}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

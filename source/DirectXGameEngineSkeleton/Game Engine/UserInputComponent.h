@@ -2,17 +2,19 @@
 #define  _USERINPUTCOMPONENT_H
 #define  WIN32_LEAN_AND_MEAN
 
-class UserInputComponent;
+#include "GameObject.h"
 
-#include "InputComponent.h"
-
-class UserInputComponent : public InputComponent
+class UserInputComponent : public BaseComponent
 {
+private:
+	FLOAT max_velocity;
 public:
-	UserInputComponent() {};
+	UserInputComponent(FLOAT max_velo);
 	~UserInputComponent() {};
 
-	void handleInput(GameObject *object, Input *input);
+	void update(GameObject *object, Input *input);
+	bool handleMessage(UINT messageCode);
+
 
 	const FLOAT MAX_VELOCITY = 3.0f; // Pixels per seconds
 	const UCHAR A_KEY = 0x41;

@@ -6,6 +6,8 @@
 #include "Game Engine/textureManager.h"
 #include "Game Engine/image.h"
 #include <WinUser.h>
+#include "Game Engine\UserInputComponent.h"
+#include "Game Engine\AutoInputComponent.h"
 #include "Game Engine/GameObject.h"
 
 //=============================================================================

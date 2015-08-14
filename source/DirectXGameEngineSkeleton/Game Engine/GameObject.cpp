@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "GraphicComponent.h"
 
 
 //=================================================
@@ -16,8 +17,6 @@ GameObject::GameObject(UINT _x, UINT _y, FLOAT _vx, FLOAT _vy)
 	width = 31;
 	height = 30;
 
-	sprite = new Image();
-	inputCom = NULL;
 	graphicCom = new GraphicComponent();
 }
 
@@ -30,7 +29,7 @@ GameObject::GameObject() : GameObject(16, 15, 0, 0)
 //=================================================
 GameObject::~GameObject()
 {
-	SAFE_DELETE(sprite);
+	SAFE_DELETE(graphicCom);
 }
 
 //=================================================
@@ -56,8 +55,14 @@ void GameObject::update(Input *input)
 {
 	oldVx = vx;
 
-	if (inputCom != NULL)
-		inputCom->handleInput(this, input);
+	list<BaseComponent *>::iterator listIte = componentList.begin();
+	
+	while (listIte != componentList.end())
+	{
+		BaseComponent *comp = *listIte;
+		comp->update(this, input);
+		listIte++;
+	}
 
 	if (oldVx != vx)
 		requestChangeSprite();
@@ -65,7 +70,7 @@ void GameObject::update(Input *input)
 	/* Update object properties */
 	x += vx;
 
-	graphicCom->update(0.3f);
+	graphicCom->update(this, input);
 }
 
 //=================================================
@@ -81,14 +86,20 @@ void GameObject::requestChangeSprite()
 	graphicCom->requestChangeSprite(this, 1);
 }
 
-void GameObject::setInputComponent(InputComponent *iCom)
+void GameObject::addComponent(BaseComponent *com, bool isGraphicRelate)
 {
-	SAFE_DELETE(inputCom);
-	inputCom = iCom;
-}
-
-void GameObject::setGraphicComponent(GraphicComponent *gCom)
-{
-	SAFE_DELETE(graphicCom);
-	graphicCom = gCom;
+	if (isGraphicRelate)
+	{
+		GraphicComponent * temp = graphicCom;
+		graphicCom = dynamic_cast<GraphicComponent *>(com);
+		if (graphicCom == 0)
+		{
+			SAFE_DELETE(graphicCom);
+			graphicCom = temp;
+		}
+	}
+	else
+	{
+		componentList.push_back(com);
+	}
 }

@@ -2,14 +2,30 @@
 #define  _GAMEOBJECT_H
 #define WIN32_LEAN_AND_MEAN
 
-class InputComponent;
+class BaseComponent;
+class GameObject;
 class GraphicComponent;
+
 
 #include <windows.h>
 #include "image.h"
 #include "input.h"
-#include "InputComponent.h"
-#include "GraphicComponent.h"
+#include <list>
+
+class BaseComponent
+{
+public:
+	BaseComponent() {};
+	~BaseComponent() {};
+
+	virtual void update(GameObject *gObject, Input *input) = 0;
+
+	virtual bool handleMessage(UINT messageCode) = 0;
+};
+
+
+
+using namespace std;
 
 class GameObject
 {
@@ -21,13 +37,11 @@ private:
 	FLOAT oldVx;
 	UINT width;		// game object width
 	UINT height;	// game object height
-
-	Image *sprite;
 	UINT ncols;		// number of columns used for spritesheet
 
-	// Components list
-	InputComponent *inputCom;
+	// List of base component;
 	GraphicComponent *graphicCom;
+	list<BaseComponent*> componentList;
 public:
 	// GameObject constructor with no parameter
 	// Should set x = y = vx = vy = 0
@@ -41,12 +55,6 @@ public:
 	// Initialize sprite object
 	bool spriteInitialize(Graphics *g, TextureManager *TextureM);
 
-	// set InputComponent object
-	void setInputComponent(InputComponent *iCom);
-
-	// set GraphicComponent object
-	void setGraphicComponent(GraphicComponent *gCom);
-
 	// Update GameObject
 	// frameTime = used for calculate object physics and sprite animation
 	// g = pointer to Graphics object
@@ -58,6 +66,9 @@ public:
 
 	// Change Sprite
 	void requestChangeSprite();
+
+	// Add component
+	void addComponent(BaseComponent *com, bool isGraphicRelate);
 
 	//==========================
 	// Fields

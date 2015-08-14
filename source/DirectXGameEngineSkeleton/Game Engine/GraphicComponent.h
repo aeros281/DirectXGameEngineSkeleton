@@ -2,12 +2,12 @@
 #define _GRAPHICCOMPONENT_H
 #define WIN32_LEAN_AND_MEAN
 
-#include "image.h"
 #include "GameObject.h"
+#include "image.h"
 
-class GameObject;
 
-class GraphicComponent
+#pragma message("Begin to define GraphicComponent")
+class GraphicComponent : public BaseComponent
 {
 private:
 	Image *image;
@@ -19,11 +19,13 @@ public:
 
 	void initialize(Graphics *g, UINT width, UINT height, UINT ncols, TextureManager *TextureM, FLOAT frameDelay);
 
-	void update(FLOAT frameTime);
+	void update(GameObject *object, Input *input);
+	bool handleMessage(UINT messageCode);
 
 	void draw(GameObject *object, float interpolation);
 
 	virtual bool requestChangeSprite(GameObject *object, UINT message);
 };
+#pragma message("End define GraphicComponent")
 
 #endif // !_GRAPHICCOMPONENT_H

@@ -1,8 +1,6 @@
 #include "GraphicComponent.h"
 
 
-
-
 GraphicComponent::~GraphicComponent()
 {
 	SAFE_DELETE(image);
@@ -13,9 +11,9 @@ GraphicComponent::GraphicComponent()
 	image = new Image();
 }
 
-void GraphicComponent::update(FLOAT frameTime)
+void GraphicComponent::update(GameObject *object, Input *input)
 {
-	image->update(frameTime);
+	image->update(2.0f);
 }
 
 void GraphicComponent::draw(GameObject *object, float interpolation)
@@ -65,5 +63,10 @@ bool GraphicComponent::requestChangeSprite(GameObject *object, UINT message)
 	image->setFrames(startFrame, endFrame);
 	image->setCurrentFrame(startFrame);
 
+	return true;
+}
+
+bool GraphicComponent::handleMessage(UINT messageCode)
+{
 	return true;
 }

@@ -1,6 +1,4 @@
 #include "megaman.h"
-#include "Game Engine\UserInputComponent.h"
-#include "Game Engine\AutoInputComponent.h"
 
 //=============================================================================
 // Constructor
@@ -9,7 +7,8 @@ MegaMan::MegaMan()
 {
 	rmTexture = new TextureManager();
 	megaman = new GameObject();
-	megaman->setInputComponent(new UserInputComponent());
+	megaman->addComponent(new UserInputComponent(2.4f), false);
+	megaman->addComponent(new AutoInputComponent(2.4f), false);
 
 }
 
@@ -45,12 +44,6 @@ void MegaMan::initialize(HWND hwnd)
 void MegaMan::update()
 {
 	UINT step = 10;
-
-	// Change InputComponent
-	if (input->wasKeyPressed(VK_DOWN))
-		megaman->setInputComponent(new AutoInputComponent());
-	if (input->wasKeyPressed(VK_UP))
-		megaman->setInputComponent(new UserInputComponent());
 
 	// Scaling world
 	if (input->wasKeyPressed(VK_RETURN))

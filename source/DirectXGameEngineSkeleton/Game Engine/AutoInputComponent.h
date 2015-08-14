@@ -2,15 +2,21 @@
 #define _AUTOINPUTCOMPONENT_H
 #define WIN32_LEAN_AND_MEAN
 
-#include "InputComponent.h"
+#include "GameObject.h"
 
-class AutoInputComponent : public InputComponent
+#pragma message("Define AutoInput Component")
+class AutoInputComponent : public BaseComponent
 {
+private:
+	FLOAT max_velocity;			// the maximum velocity (maximum number of pixels an object able to move within a frame)
 public:
-	AutoInputComponent();
+	AutoInputComponent(FLOAT = 2.0f);
 	~AutoInputComponent();
 
-	const FLOAT MAX_VELOCITY = 3.0f;
-	void handleInput(GameObject *object, Input *input);
+	// Implement of virtual method
+	void update(GameObject *object, Input *input);
+	bool handleMessage(UINT messageCode);
+
+
 };
 #endif
